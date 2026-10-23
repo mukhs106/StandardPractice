@@ -442,7 +442,7 @@ button.term {
    ------------------------------------------------------------------ */
 
 .gate { padding-block: var(--s7) var(--s8); }
-.gate-mast { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s4); margin-bottom: var(--s5); }
+.gate-mast { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2); margin-bottom: var(--s5); }
 .gate-mast .mast__name { font-size: clamp(22px, 3.6vw, 48px); }
 .gate-mast .mast__sub { font-size: clamp(14px, 1.4vw, 18px); }
 
