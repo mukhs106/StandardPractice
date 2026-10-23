@@ -4,7 +4,10 @@
     {
       "name": "standard-practice",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd /private/tmp/claude-501/-Users-suhanimukherjee-Desktop-StandardPractice/1af6e548-e3a4-44ff-9542-b51adb6213f4/scratchpad/site && exec python3 -m http.server 8417 --bind 127.0.0.1"],
+      "runtimeArgs": [
+        "-c",
+        "cd /private/tmp/claude-501/-Users-suhanimukherjee--claude-spares-spare-g5ShGW/0598d204-48a6-4866-bbbf-987773e7c8d4/scratchpad/site && exec python3 -m http.server 8417 --bind 127.0.0.1"
+      ],
       "port": 8417
     }
   ]
