@@ -582,7 +582,7 @@
         clear();
         state = null;
         file.hidden = true;
-        status.textContent = 'Case file closed. Verifying your standing before you continue.';
+        status.textContent = 'Case file closed.';
         status.focus();
       });
     }

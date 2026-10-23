@@ -101,6 +101,7 @@ svg { display: block; }
 }
 
 .statement {
+  text-wrap: balance;
   font: 700 clamp(26px, 3.2vw, 46px) / 1.02 var(--sans);
   letter-spacing: -0.03em;
 }
@@ -170,7 +171,7 @@ svg { display: block; }
 /* Repetition band: one readable statement, decorative repeats hidden */
 .repeat {
   overflow: hidden;
-  margin-top: var(--s7);
+  margin-top: var(--s6);
   background: var(--blue);
   color: var(--paper);
   user-select: none;
@@ -405,7 +406,7 @@ button.term {
    Footer
    ------------------------------------------------------------------ */
 
-.site-footer { margin-top: var(--s8); border-top: var(--rule); }
+.site-footer { margin-top: var(--s7); border-top: var(--rule); }
 .footer-row {
   display: flex;
   flex-wrap: wrap;
@@ -450,6 +451,10 @@ button.term {
 .gate-main { padding: var(--s5) var(--s6) var(--s6); }
 .gate-main .statement { max-width: 12ch; font-size: clamp(36px, 5.6vw, 84px); line-height: 0.94; letter-spacing: -0.04em; }
 .gate-main > * + * { margin-top: var(--s5); }
+.gate-main .gate-lede { max-width: 44ch; margin-top: var(--s4); }
+#gate-status:empty { display: none; }
+.gate-route { margin-bottom: var(--s3); }
+#as-applicant { display: inline-block; }
 
 .gate-widget {
   display: flex;
@@ -513,20 +518,26 @@ button.term {
    Home
    ------------------------------------------------------------------ */
 
-.hero { padding-block: var(--s7) var(--s6); }
-.hero .monument { margin-top: var(--s5); }
+.hero { padding-block: var(--s6) 40px; }
+.hero .monument { margin-top: var(--s4); }
 .monument__line { display: block; }
+/* The statement, then a deliberate pause before the question */
+.hero__headline { font-size: clamp(40px, 7.4vw, 124px); line-height: 0.95; }
+.monument__question { margin-top: 0.14em; }
 .hero__foot {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--s4) var(--s5);
-  margin-top: var(--s6);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s4);
+  margin-top: var(--s5);
 }
+.hero__foot .lede { max-width: 54ch; }
 @media (min-width: 768px) {
-  .hero__foot .lede { white-space: nowrap; }
+  .hero__foot .lede span { display: block; }
 }
+.hero__small { font: 400 16px/1.45 var(--sans); }
+.hero__small a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.hero__small a:hover { color: var(--blue); }
 
 /* Standing: one ledger line between the declaration and the routes */
 .standing {
@@ -538,7 +549,7 @@ button.term {
   padding-block: var(--s4);
   border-top: var(--rule);
 }
-.standing__facts { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); }
+.standing__facts { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); }
 .standing__facts div { display: flex; gap: var(--s2); }
 .standing__facts dd { font-weight: 400; }
 @media (max-width: 639px) {
@@ -596,7 +607,7 @@ button.term {
   display: grid;
   grid-template-columns: minmax(200px, 1fr) minmax(0, 5fr);
   gap: var(--s4) var(--s5);
-  margin-top: var(--s7);
+  margin-top: var(--s6);
   padding-top: var(--s4);
   border-top: var(--rule);
 }
@@ -624,7 +635,7 @@ button.term {
   .permits-table td[data-label]::before { content: attr(data-label); display: block; font: 400 13px/1.3 var(--mono); text-transform: uppercase; }
 }
 
-.authority { margin-top: var(--s8); }
+.authority { margin-top: var(--s7); }
 .authority .statement { max-width: 22ch; }
 .authority .link { display: inline-block; margin-top: var(--s3); }
 

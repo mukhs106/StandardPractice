@@ -30,8 +30,9 @@
         </div>
 
         <div class="gate-main">
-          <h1 class="statement">Recognition precedes permission.</h1>
-          <p class="mono" id="gate-status" tabindex="-1" aria-live="polite">Verifying your standing before you continue.</p>
+          <h1 class="statement">Do you have permission?</h1>
+          <p class="lede gate-lede">Before you design, experiment or make something new, the Office must establish your standing.</p>
+          <p class="mono" id="gate-status" tabindex="-1" aria-live="polite"></p>
 
           <div class="gate-file" id="open-file" hidden>
             <p class="mono-s">Case file open</p>
@@ -50,6 +51,7 @@
           </div>
 
           <form id="verify" novalidate>
+            <p class="hero__small gate-route" id="declared-qual">Already recognised? We’ll take your word for it.<button class="ast" type="button" aria-label="Qualification" data-q="A person who declares Standing at verification is presumed to hold it. The presumption is not reviewed unless contested by a Practitioner of Standing (4.7).">*</button></p>
             <div class="gate-widget">
               <label class="check">
                 <input class="box" type="checkbox" id="declared" name="declared" aria-describedby="declared-qual">
@@ -57,7 +59,6 @@
               </label>
               <button class="btn" type="submit">Continue</button>
             </div>
-            <p class="qual" id="declared-qual">Declared standing is not reviewed unless contested (<a class="xref" href="charter.html#c-4-7">4.7</a>).</p>
           </form>
 
           <a class="link" id="as-applicant" href="#calibration">Continue as an Applicant <span aria-hidden="true">↗</span></a>
