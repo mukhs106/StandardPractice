@@ -777,6 +777,122 @@ button.link {
 .review__reply:focus { outline: none; }
 .review__reply .text { margin-top: var(--s2); }
 
+/* Correspondence: day offsets hang in the margin, letters in columns 4–10 */
+.correspondence { padding-block: var(--s5) var(--s7); }
+.corr-head h2 { grid-column: 4 / span 7; }
+
+.corr-item {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  margin-top: var(--s5);
+  scroll-margin-top: var(--s4);
+}
+.corr-item:focus { outline: none; }
+.corr-item:focus-visible .letter { outline: 2px solid var(--ink); outline-offset: 3px; }
+.corr-day {
+  grid-column: 1 / span 3;
+  padding-top: var(--s5);
+  text-align: right;
+}
+.corr-item .letter { grid-column: 4 / span 7; min-width: 0; }
+
+button.corr-next { display: block; margin-top: var(--s4); margin-left: calc((100% - 11 * var(--gutter)) / 12 * 3 + 3 * var(--gutter)); }
+
+.corr-end { margin-top: var(--s6); }
+.corr-end ul { grid-column: 4 / span 7; display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5); }
+
+.arrive { animation: arrive var(--fade) ease-out; }
+@keyframes arrive { from { opacity: 0; } }
+
+@media (max-width: 1023px) {
+  .corr-head h2, .corr-day, .corr-item .letter, .corr-end ul { grid-column: 1 / -1; }
+  .corr-day { padding-top: 0; margin-bottom: var(--s2); text-align: left; }
+  button.corr-next { margin-left: 0; }
+}
+
+/* Quoted submissions within letters */
+.letter__quote-label { margin-bottom: var(--s2); }
+.letter__body .letter__quote { margin-top: 0; margin-bottom: var(--s4); font-style: italic; }
+
+/* ------------------------------------------------------------------
+   Your Record
+   ------------------------------------------------------------------ */
+
+.record-standing { padding-block: var(--s5); }
+.record-standing .grid { row-gap: var(--s2); align-items: baseline; }
+.record-standing .ref { grid-column: 1 / span 3; }
+.record-standing .display-s { grid-column: 4 / span 7; }
+
+.record-band { padding-block: var(--s5) var(--s7); }
+.record-band .grid { row-gap: var(--s4); }
+.record-band h2 { grid-column: 1 / span 3; }
+.record-table,
+.record-empty,
+.record-foot { grid-column: 4 / span 9; }
+
+.record-table { width: 100%; border-collapse: collapse; }
+.record-table th {
+  padding: 0 var(--s3) var(--s2) 0;
+  border-bottom: var(--rule);
+  font: var(--t-ref);
+  text-align: left;
+}
+.record-table td {
+  padding: var(--s3) var(--s3) var(--s3) 0;
+  border-bottom: var(--rule);
+  vertical-align: baseline;
+}
+.record-table .ref { white-space: nowrap; }
+
+.record-open {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: var(--t-ui);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.record-open:hover { text-decoration-thickness: 2px; }
+
+.record-letter > td { padding: var(--s4) 0 var(--s5); }
+.record-letter__inner { max-width: 760px; }
+.record-print { margin-top: var(--s3); }
+
+.record-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s3) var(--s5); margin-top: var(--s3); }
+
+@media (max-width: 1023px) {
+  .record-standing .ref, .record-standing .display-s,
+  .record-band h2, .record-table, .record-empty, .record-foot { grid-column: 1 / -1; }
+}
+@media (max-width: 899px) {
+  .record-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .record-table, .record-table tbody, .record-table tr, .record-table td { display: block; }
+  .record-table tr.record-row { padding-block: var(--s3); border-bottom: var(--rule); }
+  .record-table tbody tr:first-child { border-top: var(--rule); }
+  .record-table tr.record-letter { border-bottom: var(--rule); }
+  .record-table tr[hidden] { display: none; }
+  .record-table td { padding: 0; border: 0; }
+  .record-table td + td { margin-top: var(--s2); }
+  .record-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font: var(--t-ref);
+    color: var(--ink);
+  }
+  .record-letter > td { padding: var(--s2) 0 var(--s4); }
+}
+
+/* Receipts */
+.receipt:focus { outline: none; }
+.receipt .text { margin-top: var(--s2); }
+.receipt .link { display: inline-block; margin-top: var(--s4); }
+
 .empty .display-s { margin-bottom: var(--s4); }
 .empty .btn { margin-top: var(--s4); }
 
@@ -814,6 +930,24 @@ button.link {
 
   .frame { max-width: none; padding: 0; }
   .doc-layout { display: block; padding: 0; }
+  .band { border: 0; }
+  .correspondence { padding: 0; }
+  .corr-item { display: block; margin: 0; }
+  .corr-item + .corr-item { break-before: page; }
+  .corr-day { display: none; }
+
+  /* Printing a single letter from the Record */
+  .print-one main > :not(.record-band),
+  .print-one .record-band h2,
+  .print-one .record-foot,
+  .print-one .record-table thead,
+  .print-one .record-table tbody > tr:not(.print-target) { display: none !important; }
+  .print-one .record-band { padding: 0; }
+  .print-one .record-table,
+  .print-one .record-table tbody,
+  .print-one .record-table tr,
+  .print-one .record-table td { display: block; border: 0; padding: 0; }
+  .print-one .record-letter__inner { max-width: none; }
 
   .letter { border: 0; padding: 0; break-inside: avoid; }
   .letter, .letter .text, .letter__body p { font-size: 11.5pt; }

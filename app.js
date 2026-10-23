@@ -448,9 +448,14 @@
     if (L.re) art.appendChild(el('p', 'letter__re ui', L.re));
 
     var body = el('div', 'letter__body');
-    var h = el('h2', 'display-s', L.title);
+    var h = appendProse(el('h2', 'display-s'), L.title, {});
     if (L.titleRed) h.appendChild(el('span', 'red', L.titleRed));
     body.appendChild(h);
+    if (L.quote) {
+      // The person's own words: shown as lodged, never linked.
+      body.appendChild(el('p', 'letter__quote-label ref', L.quoteLabel));
+      body.appendChild(el('p', 'letter__quote', '“' + L.quote + '”'));
+    }
     L.paras.forEach(function (p) {
       body.appendChild(appendProse(el('p', p.red ? 'red' : null), p.t, linked));
     });
@@ -669,6 +674,7 @@
     reviewForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var obsRef = nextRef('OB');
+      var grounds = reviewForm.elements.grounds.value.trim();
       addRecord({
         ref: obsRef,
         date: new Date().toISOString(),
@@ -678,13 +684,15 @@
         qualifies: true,
         submitted: {
           clause: reviewForm.elements.clause.value.trim(),
-          grounds: reviewForm.elements.grounds.value.trim()
+          grounds: grounds
         },
         concerning: entry.ref,
         letter: {
           re: 'Re: Request for Review of Determination ' + entry.ref + ' (Form R-1).',
           title: 'Request for Review: ',
           titleRed: 'treated as an Observation.',
+          quoteLabel: 'Grounds as lodged',
+          quote: grounds,
           paras: [{ t: REVIEW_RESPONSE }],
           officer: 'Registrar of Observations'
         }
@@ -698,6 +706,303 @@
   }
 
   /* ----------------------------------------------------------------
+     Unregistered Practice: Form UM-1 and correspondence (9.1 → 9.4)
+     ---------------------------------------------------------------- */
+
+  var UM_LETTERS = [
+    {
+      day: 0,
+      document: 'Notice of Receipt',
+      status: 'Received',
+      qualifies: false,
+      title: 'Notice of Receipt (9.1)',
+      officer: 'Receiving Officer, Unregistered Practice',
+      paras: [
+        { t: 'The Office acknowledges receipt of Work made without a current Permit.' },
+        { t: 'This notice is not a penalty.', red: true }
+      ]
+    },
+    {
+      day: 14,
+      document: 'Interim Classification',
+      status: 'Personal Activity',
+      qualifies: true,
+      title: 'Interim Classification (9.2)',
+      officer: 'Classification Officer',
+      paras: [
+        { t: 'Your Work has been classified as Personal Activity. Personal Activity is valued by the Office. It may not be cited as experience, submitted for review, entered in your Record as Practice, or used as Evidence of Prior Practice.' }
+      ]
+    },
+    {
+      day: 90,
+      document: 'Adjustment of Standing',
+      status: 'Deemed preparatory',
+      qualifies: true,
+      title: 'Adjustment of Standing (9.3)',
+      officer: 'Deputy Registrar of Standing',
+      paras: [
+        { t: 'Recognised Practice is counted from the date of your first Permit. Work undertaken before that date is deemed preparatory.' },
+        { t: 'Your Recognised Practice: 0 years.', red: true }
+      ]
+    },
+    {
+      day: 90,
+      document: 'Offer of Regularisation',
+      status: 'Available on evidence',
+      qualifies: true,
+      title: 'Offer of Regularisation (9.6)',
+      officer: 'Clerk of Regularisation',
+      paras: [
+        { t: 'You may apply for Retrospective Regularisation. Applications must include evidence that a Permit was held at the time of making.' }
+      ]
+    },
+    {
+      day: 400,
+      document: 'Notice of Recognition',
+      status: 'Assistance',
+      qualifies: true,
+      title: 'Notice of Recognition (9.4)',
+      officer: 'Registrar of Attribution',
+      paras: [
+        { t: 'We are pleased to inform you that your Work has been recognised.' },
+        { t: 'Having considered the Influences evident in the Work (1.14), the Office has determined that it constitutes a Continuation of the Practice of Wren & Calloway, Member Practice No. 0031. Attribution has been entered in the Record accordingly.' },
+        { t: 'Your contribution has been recorded as Assistance.', red: true }
+      ]
+    }
+  ];
+
+  function initUnregistered() {
+    var form = document.getElementById('um1');
+    var disclosureSection = document.getElementById('disclosure');
+    var correspondence = document.getElementById('correspondence');
+    var letters = document.getElementById('letters');
+    var end = document.getElementById('um-end');
+
+    function entryFor(i) {
+      var d = state.disclosure;
+      if (d.refs[i]) return findRecord(d.refs[i]);
+      var spec = UM_LETTERS[i];
+      var entry = addRecord({
+        ref: nextRef('UM'),
+        date: d.date,
+        kind: 'unregistered',
+        document: spec.document,
+        status: spec.status,
+        qualifies: spec.qualifies,
+        letter: {
+          day: spec.day,
+          re: 'Re: Voluntary Disclosure of Unregistered Practice (Form UM-1). ' +
+            (d.what ? '“' + d.what + '”' : 'Description not stated.'),
+          title: spec.title,
+          paras: spec.paras,
+          officer: spec.officer
+        }
+      });
+      d.refs[i] = entry.ref;
+      save(state);
+      return entry;
+    }
+
+    function show(i, arriving) {
+      var spec = UM_LETTERS[i];
+      var item = el('div', 'corr-item' + (arriving ? ' arrive' : ''));
+      item.tabIndex = -1;
+      item.setAttribute('aria-label', 'Day ' + spec.day + ': ' + spec.document);
+      item.appendChild(el('p', 'corr-day ref', 'Day ' + spec.day));
+      item.appendChild(renderLetter(entryFor(i)));
+      letters.appendChild(item);
+
+      if (state.disclosure.shown < i + 1) {
+        state.disclosure.shown = i + 1;
+        save(state);
+      }
+
+      var old = letters.querySelector('.corr-next');
+      if (old) old.remove();
+      if (i < UM_LETTERS.length - 1) {
+        var next = el('button', 'link corr-next no-print');
+        next.type = 'button';
+        next.appendChild(document.createTextNode('Next correspondence '));
+        var arrow = el('span', null, '↓');
+        arrow.setAttribute('aria-hidden', 'true');
+        next.appendChild(arrow);
+        next.addEventListener('click', function () { show(i + 1, true); });
+        letters.appendChild(next);
+      } else {
+        end.hidden = false;
+      }
+
+      if (arriving) {
+        item.focus({ preventScroll: true });
+        item.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' });
+      }
+    }
+
+    function open() {
+      disclosureSection.hidden = true;
+      correspondence.hidden = false;
+    }
+
+    // Resume a disclosure already in progress.
+    if (state.disclosure) {
+      open();
+      for (var i = 0; i < state.disclosure.shown; i++) show(i, false);
+      if (!state.disclosure.shown) show(0, false);
+      return;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      state.disclosure = {
+        what: form.elements.what.value.trim(),
+        understood: document.getElementById('understood').checked,
+        date: new Date().toISOString(),
+        refs: [],
+        shown: 0
+      };
+      save(state);
+      open();
+      show(0, true);
+    });
+  }
+
+  /* ----------------------------------------------------------------
+     Your Record
+     ---------------------------------------------------------------- */
+
+  var DAY = 86400000;
+
+  function effectiveTime(entry) {
+    return new Date(entry.date).getTime() + ((entry.letter && entry.letter.day) || 0) * DAY;
+  }
+
+  function initRecord() {
+    document.getElementById('standing-statement').textContent =
+      state.standing === 'recognised'
+        ? 'Recognised (declared; assumed).'
+        : 'Applicant (verified by calibration).';
+
+    var entries = (state.record || []).map(function (e, i) { return { e: e, i: i }; });
+    entries.sort(function (a, b) {
+      return (effectiveTime(a.e) - effectiveTime(b.e)) || (a.i - b.i);
+    });
+
+    if (!entries.length) {
+      document.getElementById('record-empty').hidden = false;
+      document.getElementById('record-table').hidden = true;
+      return;
+    }
+
+    var tbody = document.getElementById('record-rows');
+    entries.forEach(function (item, n) {
+      var entry = item.e;
+      var id = 'record-letter-' + n;
+
+      var row = el('tr', 'record-row');
+      var refCell = el('td', 'ref', entry.ref);
+      refCell.setAttribute('data-label', 'Ref.');
+      var dateCell = el('td', 'ref', formatDate(entry.date, (entry.letter && entry.letter.day) || 0));
+      dateCell.setAttribute('data-label', 'Date');
+
+      var docCell = el('td', 'ui');
+      var toggle = el('button', 'record-open');
+      toggle.type = 'button';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', id);
+      toggle.appendChild(document.createTextNode(entry.document + ' '));
+      var arrow = el('span', 'record-open__arrow', '↓');
+      arrow.setAttribute('aria-hidden', 'true');
+      toggle.appendChild(arrow);
+      docCell.appendChild(toggle);
+
+      var statusCell = el('td', 'ui' + (entry.qualifies ? ' red' : ''), entry.status);
+      statusCell.setAttribute('data-label', 'Status');
+
+      [refCell, dateCell, docCell, statusCell].forEach(function (c) { row.appendChild(c); });
+
+      var expansion = el('tr', 'record-letter');
+      expansion.id = id;
+      expansion.hidden = true;
+      var cell = el('td');
+      cell.colSpan = 4;
+      var wrap = el('div', 'record-letter__inner');
+      wrap.appendChild(renderLetter(entry));
+      var print = el('button', 'link no-print record-print', 'Print this letter');
+      print.type = 'button';
+      print.addEventListener('click', function () { printOne(expansion); });
+      wrap.appendChild(print);
+      cell.appendChild(wrap);
+      expansion.appendChild(cell);
+
+      toggle.addEventListener('click', function () {
+        var open = expansion.hidden;
+        expansion.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        arrow.textContent = open ? '↑' : '↓';
+      });
+
+      tbody.appendChild(row);
+      tbody.appendChild(expansion);
+    });
+  }
+
+  function printOne(target) {
+    document.body.classList.add('print-one');
+    target.classList.add('print-target');
+    var done = function () {
+      document.body.classList.remove('print-one');
+      target.classList.remove('print-target');
+      window.removeEventListener('afterprint', done);
+    };
+    window.addEventListener('afterprint', done);
+    window.print();
+  }
+
+  /* ----------------------------------------------------------------
+     Form O-1
+     ---------------------------------------------------------------- */
+
+  var OBSERVATION_RECEIPT = 'Thank you. Your observation concerns the Standard rather than your Determination. It has been filed with the Standard (7.3) and will be considered at the next Revision. Revisions are not scheduled. Your Determination is unaffected (7.4).';
+
+  function initObservation() {
+    var form = document.getElementById('o1');
+    var receipt = document.getElementById('o1-receipt');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = form.elements.observation.value.trim();
+      var ref = nextRef('OB');
+      addRecord({
+        ref: ref,
+        date: new Date().toISOString(),
+        kind: 'observation',
+        document: 'Observation on the Standard (Form O-1)',
+        status: 'Filed with the Standard',
+        qualifies: true,
+        submitted: { observation: text },
+        letter: {
+          re: 'Re: Observation on the Standard (Form O-1).',
+          title: 'Observation: ',
+          titleRed: 'filed with the Standard.',
+          quoteLabel: 'Observation as lodged',
+          quote: text,
+          paras: [{ t: OBSERVATION_RECEIPT }],
+          officer: 'Registrar of Observations'
+        }
+      });
+      form.hidden = true;
+      document.getElementById('o1-ref').textContent = 'Ref. ' + ref;
+      appendProse(document.getElementById('o1-text'), OBSERVATION_RECEIPT, {});
+      receipt.hidden = false;
+      receipt.focus();
+    });
+  }
+
+  function reducedMotion() {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+  }
+
+  /* ----------------------------------------------------------------
      Start
      ---------------------------------------------------------------- */
 
@@ -707,5 +1012,8 @@
     if (page === 'gate') initGate();
     if (page === 'apply') initApply();
     if (page === 'determination') initDetermination();
+    if (page === 'unregistered') initUnregistered();
+    if (page === 'record') initRecord();
+    if (page === 'observation') initObservation();
   });
 })();

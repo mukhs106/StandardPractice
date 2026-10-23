@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB" data-page="record">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Record — Standard Practice</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="frame">
+      <a class="wordmark" href="home.html"><span>Standard Practice</span><span>Office for Exceptions</span></a>
+      <nav class="site-nav" aria-label="Office">
+        <p>Viewing as: <span data-standing-label>Applicant</span></p>
+        <ul>
+          <li><a href="charter.html">The Charter</a></li>
+          <li><a href="record.html" aria-current="page">Your Record</a></li>
+          <li><a href="apply.html">Apply to make <span aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head frame">
+      <p class="ref">The Record (<a class="xref" href="charter.html#part-8">Part 8</a>)</p>
+      <h1 class="display-l">Your Record.</h1>
+    </section>
+
+    <section class="band record-standing" aria-labelledby="standing-label">
+      <div class="frame grid">
+        <p class="ref" id="standing-label">Standing</p>
+        <p class="display-s" id="standing-statement"></p>
+      </div>
+    </section>
+
+    <section class="band record-band" aria-labelledby="correspondence-title">
+      <div class="frame grid">
+        <h2 class="display-s" id="correspondence-title">Correspondence</h2>
+
+        <div class="record-empty" id="record-empty" hidden>
+          <p class="text">Correspondence will be entered here as it is issued. Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
+        </div>
+
+        <table class="record-table" id="record-table">
+          <thead>
+            <tr>
+              <th scope="col">Ref.</th>
+              <th scope="col">Date</th>
+              <th scope="col">Document</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="record-rows"></tbody>
+        </table>
+
+        <div class="record-foot">
+          <p class="ref">The Record is permanent. You may view your Record. You may not amend it (<a class="xref" href="charter.html#c-8-3">8.3</a>).</p>
+          <a class="link no-print" href="observation.html">Lodge an observation</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="frame grid">
+      <p class="footer-id">Standard Practice — Office for Exceptions. Established 1852.<br>Practice Charter, Revision 03.</p>
+      <p class="footer-motto">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html">Your Record</a>
+        <a href="observation.html">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
