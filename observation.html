@@ -50,7 +50,8 @@
         <form class="filing__body" id="o1" novalidate>
           <div class="field">
             <label class="label" for="observation">Your observation</label>
-            <textarea class="input" id="observation" name="observation" rows="6"></textarea>
+            <textarea class="input" id="observation" name="observation" rows="6" aria-describedby="o1-error"></textarea>
+            <p class="form-error" id="o1-error" role="status"></p>
           </div>
           <div class="filing__foot">
             <button class="btn" type="submit">Lodge <span aria-hidden="true">→</span></button>
@@ -75,7 +76,7 @@
         <a href="charter.html">The Charter</a>
         <a href="record.html">Your Record</a>
         <a href="observation.html" aria-current="page">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
+        <a href="index.html">Re-verify standing</a>
       </nav>
     </div>
   </footer>

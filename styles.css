@@ -252,7 +252,20 @@ svg { display: block; }
   text-underline-offset: 0.18em;
   cursor: help;
 }
+button.term {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+}
 .term:hover { color: var(--blue); }
+.is-blue .term:hover, .decision__main .term:hover { color: inherit; }
 
 .xref {
   text-decoration: underline;
@@ -423,6 +436,8 @@ svg { display: block; }
 .page-head { padding-block: var(--s6) var(--s5); }
 .page-head .statement { margin-top: var(--s3); max-width: 22ch; }
 .page-head__assert { margin-top: var(--s3); }
+.page-head__prior { margin-top: var(--s2); }
+.page-head .qual { margin-top: var(--s3); }
 
 /* ------------------------------------------------------------------
    The gate
@@ -461,6 +476,9 @@ svg { display: block; }
 }
 
 .gate-receipt > * + * { margin-top: var(--s4); }
+.gate-file { max-width: 560px; padding: var(--s3) var(--s4); border: var(--rule); }
+.gate-file > * + *, .gate-close > * + * { margin-top: var(--s3); }
+.gate-close { padding-top: var(--s3); border-top: 1px dotted var(--ink); }
 .gate-receipt:focus { outline: none; }
 
 @media (max-width: 767px) {
@@ -553,7 +571,8 @@ svg { display: block; }
   font: 400 13px/1.35 var(--mono);
   text-transform: uppercase;
 }
-.route__list .route__outcome { font-weight: 700; }
+.route__list .route__outcome { grid-template-columns: 3.6em auto minmax(0, 1fr); font-weight: 700; }
+.route__outcome span:last-child { text-align: right; }
 
 .cell-notice .mono-l { margin-block: var(--s2) var(--s4); max-width: 24ch; }
 .cell-notice .link { color: var(--paper); }
@@ -678,6 +697,8 @@ textarea.input { min-height: 6em; resize: vertical; }
 .choices .choice { border-bottom: var(--rule); }
 
 .form-error { margin-top: var(--s2); color: var(--blue); font: 700 14px/1.4 var(--mono); text-transform: uppercase; }
+.form-error:empty { display: none; }
+.input[aria-invalid="true"] { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
 
 /* ------------------------------------------------------------------
    The dossier
@@ -891,8 +912,44 @@ textarea.input { min-height: 6em; resize: vertical; }
 .um-form { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
 .um-form form > * + * { margin-top: var(--s4); }
 .um-form .copy { max-width: 40ch; }
-.um-steps { margin-top: var(--s3); }
-.um-steps li { grid-template-columns: 3em minmax(0, 1fr) auto; }
+.um-none { margin-top: var(--s3); padding-block: var(--s2); border-block: var(--rule); }
+
+/* Case progress: stages appear as correspondence is issued */
+.case { margin-bottom: var(--s6); }
+.case__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--s2) var(--s5);
+  margin-top: var(--s2);
+  padding-block: var(--s2);
+  border-block: var(--rule);
+}
+.case__head dd { font-weight: 700; }
+.case__work, .public__work { font: 400 15px/1.4 var(--sans); text-transform: none; }
+.case__head .case__work { font-weight: 400; }
+.case__stages li {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1.2fr) minmax(0, 1fr) 7.5em;
+  gap: var(--s3);
+  padding-block: 6px;
+  border-bottom: 1px dotted var(--ink);
+}
+.case__stages li:last-child { border-bottom: var(--rule); }
+.case__status { font-weight: 700; }
+@media (max-width: 767px) {
+  .case__head { grid-template-columns: 1fr; }
+  .case__stages li { grid-template-columns: 5em minmax(0, 1fr); gap: 2px var(--s3); }
+  .case__stages li > :nth-child(n+3) { grid-column: 2; }
+}
+
+/* Form RR-1, attached to the Offer of Regularisation */
+.rr { margin-top: var(--s4); padding: var(--s3) var(--s4) var(--s4); border: var(--rule); border-left: 4px solid var(--blue); }
+.rr > * + *, .rr__form > * + * { margin-top: var(--s3); }
+.rr__meta div { display: flex; gap: var(--s3); }
+.rr__meta dd { font-weight: 700; }
+.rr__meta .case__work { font-weight: 400; }
+.rr__reply:focus { outline: none; }
+.rr__reply > * + * { margin-top: var(--s2); }
 
 /* Correspondence: a file of dated documents */
 .corr-title { padding-bottom: var(--s2); }
@@ -980,6 +1037,21 @@ textarea.input { min-height: 6em; resize: vertical; }
 .record-letter > td { padding: var(--s3) 0 var(--s5); text-transform: none; font: 400 16px/1.5 var(--sans); }
 .record-letter__inner { max-width: 820px; }
 .record-print { margin-top: var(--s3); }
+.record-concerning { display: block; margin-top: 2px; font-size: 13px; }
+
+/* Public Record: Practice admitted, not correspondence received */
+.public-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr) auto;
+  gap: var(--s3);
+  padding-block: var(--s2);
+  border-bottom: var(--rule);
+  font: 400 14px/1.4 var(--mono);
+  text-transform: uppercase;
+}
+.public__other { margin-top: var(--s4); }
+.public__other h3 { padding-bottom: var(--s2); border-bottom: var(--rule); }
+@media (max-width: 639px) { .public-list li { grid-template-columns: 1fr; gap: 2px; } }
 
 @media (max-width: 767px) {
   .record-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -1058,6 +1130,7 @@ textarea.input { min-height: 6em; resize: vertical; }
 
   /* Printing a single letter from the Record */
   .print-one .page-head,
+  .print-one .public,
   .print-one .ledger__summary,
   .print-one .ledger__head,
   .print-one .ledger__note,

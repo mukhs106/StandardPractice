@@ -38,6 +38,7 @@
       <p class="mono-s">Form P-1 · Determination · <span id="det-ref"></span></p>
       <h1 class="statement" data-det-view="deferred">Submission complete. Recognition deferred.</h1>
       <h1 class="statement" data-det-view="not-required" hidden>No Permit is required.</h1>
+      <p class="qual" id="det-superseded" hidden>This Determination has been superseded by <a class="xref" id="det-latest" href="determination.html"></a>. Your current position is shown in <a class="xref" href="record.html">your Record</a>.</p>
     </section>
 
     <div class="frame">
@@ -48,10 +49,10 @@
       </div>
 
       <dl class="decision no-print" data-needs-determination>
-        <div class="decision__main"><dt class="mono-s">Determination</dt><dd id="det-status"></dd></div>
+        <div class="decision__main"><dt class="mono-s"><a class="term" href="charter.html#c-1-15">Determination</a></dt><dd id="det-status"></dd></div>
         <div><dt class="mono-s">Submission</dt><dd id="det-submission"></dd></div>
-        <div><dt class="mono-s">Recognition</dt><dd id="det-recognition"></dd></div>
-        <div><dt class="mono-s">Public record</dt><dd id="det-public"></dd></div>
+        <div><dt class="mono-s"><a class="term" href="charter.html#c-1-5">Recognition</a></dt><dd id="det-recognition"></dd></div>
+        <div><dt class="mono-s"><button class="term" type="button" data-term="Public Record">Public Record</button> eligibility</dt><dd id="det-public"></dd></div>
       </dl>
 
       <div class="doc-layout" data-needs-determination>
@@ -62,6 +63,8 @@
           <p class="copy" data-det-view="not-required" hidden>Your standing has been assumed. Begin.</p>
 
           <ul class="doc-actions">
+            <li data-det-view="deferred"><a class="doc-action" href="apply.html">Apply again (Form P-1) <span aria-hidden="true">→</span></a></li>
+            <li data-det-view="not-required" hidden><a class="doc-action" href="record.html">View your Record <span aria-hidden="true">→</span></a></li>
             <li><button class="doc-action" type="button" id="review-toggle" aria-expanded="false" aria-controls="review">Request a review (Form R-1) <span aria-hidden="true">↓</span></button></li>
             <li><a class="doc-action" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a></li>
             <li><a class="doc-action" href="unregistered.html">Proceed without a Permit <span aria-hidden="true">↗</span></a></li>
@@ -79,14 +82,16 @@
               </div>
               <div class="field">
                 <label class="label" for="grounds">Grounds for review</label>
-                <textarea class="input" id="grounds" name="grounds" rows="4"></textarea>
+                <textarea class="input" id="grounds" name="grounds" rows="4" aria-describedby="review-error"></textarea>
               </div>
+              <p class="form-error" id="review-error" role="status"></p>
               <button class="btn" type="submit">Submit request <span aria-hidden="true">→</span></button>
             </form>
             <div class="review__reply" id="review-reply" tabindex="-1" hidden>
               <p class="mono"><span class="rev">Treated as an Observation</span></p>
               <p class="mono-s" id="review-ref"></p>
               <p class="copy" id="review-text"></p>
+              <a class="link" href="record.html">View in your Record <span aria-hidden="true">→</span></a>
             </div>
           </section>
 
@@ -103,7 +108,7 @@
         <a href="charter.html">The Charter</a>
         <a href="record.html">Your Record</a>
         <a href="observation.html">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
+        <a href="index.html">Re-verify standing</a>
       </nav>
     </div>
   </footer>

@@ -38,6 +38,7 @@
       <p class="mono-s">Form P-1 · Application for a Permit to Make</p>
       <h1 class="statement">Submit the dossier.</h1>
       <p class="page-head__assert mono"><span class="rev">Submission does not establish standing.</span></p>
+      <p class="mono-s page-head__prior" id="prior-det" hidden>Previous determination <a class="xref" id="prior-det-link" href="determination.html"></a> · <span id="prior-det-status"></span></p>
     </section>
 
     <div class="frame">
@@ -59,13 +60,13 @@
             <p class="rail-status" id="st-submission">Incomplete</p>
           </div>
           <div class="rail__block">
-            <p class="mono-s">Recognition</p>
+            <p class="mono-s"><a class="term" href="charter.html#c-1-5">Recognition</a></p>
             <p class="rail-status" data-fact="recognition">Not assessed</p>
             <p class="qual" data-view="applicant">Permits held in the Record: <span data-fact="permits">0</span>. <a class="term" href="charter.html#c-1-6">Evidence of Prior Practice</a> means Work made under a Permit.</p>
             <p class="qual" data-view="recognised">Standing assumed at verification.</p>
           </div>
           <div class="rail__block">
-            <p class="mono-s">Public record</p>
+            <p class="mono-s"><button class="term" type="button" data-term="Public Record">Public Record</button> eligibility</p>
             <p class="rail-status" data-fact="publicRecord">Withheld</p>
             <p class="qual">Visibility follows recognition.</p>
           </div>
@@ -139,7 +140,7 @@
             <p class="dossier-sec__waived" data-view="recognised">Waived. Not required of a Practitioner of Standing (3.2).</p>
             <div class="dossier-sec__body" data-view="applicant">
               <fieldset class="field wide">
-                <legend class="label">Grounds for Standing · Schedule A · <span id="grounds-count">0 of 3 selected</span></legend>
+                <legend class="label">Grounds for Standing · Schedule A · <span id="grounds-count">0 selected · minimum 3</span></legend>
                 <p class="qual" style="margin: 0 0 8px">An Applicant must satisfy no fewer than three Grounds (<a class="xref" href="charter.html#c-4-2">4.2</a>).</p>
                 <div class="grounds">
                   <div class="ground">
@@ -291,7 +292,7 @@
         <a href="charter.html">The Charter</a>
         <a href="record.html">Your Record</a>
         <a href="observation.html">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
+        <a href="index.html">Re-verify standing</a>
       </nav>
     </div>
   </footer>

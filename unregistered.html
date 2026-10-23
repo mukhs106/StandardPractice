@@ -46,29 +46,35 @@
           <p class="copy">Disclose the work. It will be received.</p>
           <div class="field">
             <label class="label" for="what">What are you making?</label>
-            <textarea class="input" id="what" name="what" rows="4"></textarea>
+            <textarea class="input" id="what" name="what" rows="4" aria-describedby="what-error"></textarea>
+            <p class="form-error" id="what-error" role="status"></p>
           </div>
           <div>
             <div class="choices">
-              <label class="choice"><input class="box" type="checkbox" id="understood" aria-describedby="understood-qual"><span>I understand that disclosure is not an admission (<a class="xref" href="charter.html#c-9-5">9.5</a>).</span></label>
+              <label class="choice"><input class="box" type="checkbox" id="understood" name="understood" aria-describedby="understood-qual understood-error"><span>I understand that disclosure is not an admission (<a class="xref" href="charter.html#c-9-5">9.5</a>).</span></label>
             </div>
             <p class="qual" id="understood-qual">Except for the purposes of <a class="xref" href="charter.html#part-9">Part 9</a>.</p>
+            <p class="form-error" id="understood-error" role="status"></p>
           </div>
           <button class="btn" type="submit">Disclose <span aria-hidden="true">→</span></button>
         </form>
         <aside>
-          <p class="mono-s">What disclosure becomes</p>
-          <ol class="route__list um-steps">
-            <li><span>9.1</span><span>Received</span><span>Day 0</span></li>
-            <li><span>9.2</span><span>Personal Activity</span><span>Day 14</span></li>
-            <li><span>9.3</span><span>Preparatory</span><span>Day 90</span></li>
-            <li><span>9.4</span><span>Attributed</span><span>Day 400</span></li>
-          </ol>
+          <p class="mono-s">Case progress</p>
+          <p class="um-none mono-s">No case is open. Stages are entered as correspondence is issued.</p>
           <p class="qual">Undisclosed work later identified by the Office is treated as disclosed (<a class="xref" href="charter.html#c-9-7">9.7</a>).</p>
         </aside>
       </div>
 
       <section class="correspondence" id="correspondence" aria-labelledby="corr-title" hidden>
+        <div class="case no-print" aria-labelledby="case-title">
+          <h2 class="mono" id="case-title">Case progress</h2>
+          <dl class="case__head mono-s">
+            <div><dt>Case</dt><dd id="case-ref"></dd></div>
+            <div><dt>Work</dt><dd class="case__work" id="case-work"></dd></div>
+            <div><dt>Current classification</dt><dd id="case-current"></dd></div>
+          </dl>
+          <ol class="case__stages mono-s" id="case-stages"></ol>
+        </div>
         <h2 class="mono corr-title no-print" id="corr-title">Correspondence</h2>
         <div id="letters"></div>
         <div class="actions corr-end no-print" id="um-end" hidden>
@@ -86,7 +92,7 @@
         <a href="charter.html">The Charter</a>
         <a href="record.html">Your Record</a>
         <a href="observation.html">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
+        <a href="index.html">Re-verify standing</a>
       </nav>
     </div>
   </footer>

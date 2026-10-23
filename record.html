@@ -41,17 +41,17 @@
     </section>
 
     <div class="frame">
-      <section class="ledger" aria-labelledby="ledger-title">
-        <dl class="ledger__summary mono-s">
-          <div class="ledger__standing"><dt>Standing</dt><dd id="standing-statement"></dd></div>
-          <div><dt>Permits held</dt><dd data-fact="permits">0</dd></div>
-          <div><dt>Recognition</dt><dd data-fact="recognition"></dd></div>
-          <div><dt>Public record</dt><dd data-fact="publicRecord"></dd></div>
-        </dl>
+      <dl class="ledger__summary mono-s">
+        <div class="ledger__standing"><dt><button class="term" type="button" data-term="Standing">Standing</button></dt><dd id="standing-statement"></dd></div>
+        <div><dt>Permits held</dt><dd data-fact="permits">0</dd></div>
+        <div><dt><a class="term" href="charter.html#c-1-5">Recognition</a></dt><dd data-fact="recognition"></dd></div>
+        <div><dt><button class="term" type="button" data-term="Public Record">Public Record</button> eligibility</dt><dd data-fact="publicRecord"></dd></div>
+      </dl>
 
+      <section class="ledger" aria-labelledby="ledger-title">
         <div class="ledger__head">
-          <h2 class="mono" id="ledger-title">Correspondence · <span data-fact="entries">0</span> on file</h2>
-          <a class="link no-print" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a>
+          <h2 class="mono" id="ledger-title">Case file · Correspondence received</h2>
+          <p class="mono-s"><span data-fact="entries">0</span> on file · <a class="link no-print" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a></p>
         </div>
 
         <p class="copy ledger__empty" id="record-empty" hidden>Correspondence will be entered here as it is issued.</p>
@@ -68,7 +68,20 @@
           <tbody id="record-rows"></tbody>
         </table>
 
-        <p class="qual ledger__note">Entries marked with an asterisk carry a qualification. Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
+        <p class="qual ledger__note">Entries marked with an asterisk carry a qualification. Correspondence is held in your case file. Its receipt does not constitute admission to the Public Record. Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
+      </section>
+
+      <section class="ledger public" aria-labelledby="public-title">
+        <div class="ledger__head">
+          <h2 class="mono" id="public-title">Public Record · Practice admitted under your name</h2>
+          <p class="mono-s"><span id="public-count">0</span> admitted</p>
+        </div>
+        <ol class="public-list" id="public-rows"></ol>
+        <p class="copy ledger__empty" id="public-empty">No Practice has been admitted under your name.</p>
+        <div class="public__other" id="attributed" hidden>
+          <h3 class="mono-s">Entered under another Practice</h3>
+          <ol class="public-list" id="attributed-rows"></ol>
+        </div>
       </section>
     </div>
   </main>
@@ -80,7 +93,7 @@
         <a href="charter.html">The Charter</a>
         <a href="record.html" aria-current="page">Your Record</a>
         <a href="observation.html">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
+        <a href="index.html">Re-verify standing</a>
       </nav>
     </div>
   </footer>

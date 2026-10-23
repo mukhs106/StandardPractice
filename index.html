@@ -37,7 +37,23 @@
 
         <div class="gate-main">
           <h1 class="statement">Recognition precedes permission.</h1>
-          <p class="mono" id="gate-status" aria-live="polite">Verifying your standing before you continue.</p>
+          <p class="mono" id="gate-status" tabindex="-1" aria-live="polite">Verifying your standing before you continue.</p>
+
+          <div class="gate-file" id="open-file" hidden>
+            <p class="mono-s">Case file open</p>
+            <p class="copy">Standing on file: <strong id="file-standing"></strong>. <span id="file-count"></span> in your Record. Re-verification replaces your Standing. Your case file is retained.</p>
+            <div class="actions">
+              <a class="link" href="home.html">Return to the Office <span aria-hidden="true">→</span></a>
+              <button class="link" type="button" id="close-file" aria-expanded="false" aria-controls="close-confirm">Close the case file</button>
+            </div>
+            <div class="gate-close" id="close-confirm" hidden>
+              <p class="qual">Closing the file removes its correspondence from this session. A closed file cannot be reopened.</p>
+              <div class="actions">
+                <button class="btn" type="button" id="close-confirmed">Close the file</button>
+                <button class="link" type="button" id="close-cancel">Keep the file</button>
+              </div>
+            </div>
+          </div>
 
           <form id="verify" novalidate>
             <div class="gate-widget">
