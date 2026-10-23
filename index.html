@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en-GB" data-page="gate">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Standard Practice</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js"></script>
+</head>
+<body>
+  <main class="gate">
+    <div class="gate__block">
+      <h1 class="gate__title">Standard Practice</h1>
+      <p>Verifying your standing before you continue.</p>
+      <p id="gate-status" aria-live="polite">This may take a few seconds.</p>
+
+      <form id="verify" novalidate>
+        <div class="gate__widget" id="widget" aria-live="polite">
+          <label class="check">
+            <input type="checkbox" id="declared" name="declared">
+            <span>I am a recognised practitioner</span>
+          </label>
+          <button class="btn" type="submit">Continue</button>
+        </div>
+      </form>
+
+      <a class="link gate__applicant" id="as-applicant" href="#calibration">Continue as an Applicant <span aria-hidden="true">↗</span></a>
+
+      <form class="calibration" id="calibration" hidden novalidate>
+        <h2 class="calibration__head ui" tabindex="-1">
+          Select all examples of
+          <span class="display-s">good design.</span>
+        </h2>
+
+        <div class="calibration__grid" id="calibration-form-grid">
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 1">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <text x="60" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="13">The Exhibition</text>
+                <line x1="50" y1="66" x2="70" y2="66" stroke="#000" stroke-width=".5"/>
+                <text x="60" y="77" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="6.5">of the Works of Industry</text>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 2">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <g fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 53c1.4 13-1.6 26 .6 41"/>
+                  <path d="M19.5 55c9-8.5 20.5-3 17 8.5-2.6 8.2-12.6 7.6-17 1.8"/>
+                  <path d="M47 29c-1.3 15 1.8 28-.8 42.5-.3 4.3 3 4.6 5.2 1.2"/>
+                  <path d="M71 57c-8.4-5.6-15.6 2.6-13.4 9.8 2 6.6 10.4 5.4 12.6-2.4"/>
+                  <path d="M70.6 55.5c-.8 7 .2 12.6 3.6 17.2"/>
+                  <path d="M81 55c1.8 7.4 4.4 13 8.8 15"/>
+                  <path d="M99 53c-3 13.6-8.2 26.6-14.4 38.4-3.6 6.2-9.6 5-11.2.6"/>
+                </g>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 3">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <g font-family="Inter, sans-serif" font-size="6.5" style="font-variant-numeric: tabular-nums">
+                  <text x="14" y="36" font-weight="500">Revision</text>
+                  <text x="46" y="36" font-weight="500">Means</text>
+                  <text x="106" y="36" font-weight="500" text-anchor="end">Year</text>
+                  <line x1="14" y1="41" x2="106" y2="41" stroke="#000" stroke-width=".75"/>
+                  <text x="14" y="52">01</text><text x="46" y="52">Machine</text><text x="106" y="52" text-anchor="end">1852</text>
+                  <line x1="14" y1="57" x2="106" y2="57" stroke="#000" stroke-width=".35"/>
+                  <text x="14" y="68">02</text><text x="46" y="68">Desk</text><text x="106" y="68" text-anchor="end">1985</text>
+                  <line x1="14" y1="73" x2="106" y2="73" stroke="#000" stroke-width=".35"/>
+                  <text x="14" y="84">03</text><text x="46" y="84">Sentence</text><text x="106" y="84" text-anchor="end">2026</text>
+                  <line x1="14" y1="89" x2="106" y2="89" stroke="#000" stroke-width=".75"/>
+                </g>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 4">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="specimen-gradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#7b5cff"/>
+                    <stop offset="1" stop-color="#25c4f0"/>
+                  </linearGradient>
+                </defs>
+                <rect width="120" height="120" fill="url(#specimen-gradient)"/>
+                <g font-family="Inter, sans-serif" fill="#fff">
+                  <text x="14" y="50" font-size="11" font-weight="500">Build without</text>
+                  <text x="14" y="63" font-size="11" font-weight="500">limits.</text>
+                  <text x="14" y="75" font-size="5.2">Everything you need, in one place.</text>
+                </g>
+                <rect x="14" y="84" width="42" height="13" fill="#fff"/>
+                <text x="35" y="92.6" text-anchor="middle" font-family="Inter, sans-serif" font-size="5.2" font-weight="500" fill="#5b4bdb">Get started</text>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 5">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="3.5" fill="#000"/>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 6">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <g stroke="#000" stroke-width=".3">
+                  <line x1="10" y1="0" x2="10" y2="120"/>
+                  <line x1="70" y1="0" x2="70" y2="120"/>
+                  <line x1="0" y1="96" x2="120" y2="96"/>
+                </g>
+                <rect x="10" y="14" width="60" height="7" fill="#b22222"/>
+                <g font-family="Inter, sans-serif" font-weight="500" font-size="14" letter-spacing="-.5">
+                  <text x="11" y="42">Form</text>
+                  <text x="11" y="56">follows</text>
+                </g>
+                <g font-family="Inter, sans-serif" font-size="4.6">
+                  <text x="73" y="44">Zurich</text>
+                  <text x="73" y="50">Basel</text>
+                  <text x="12" y="106">03</text>
+                  <text x="73" y="106">1852</text>
+                </g>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 7">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <g font-family="Inter, sans-serif" font-size="4.6">
+                  <text x="10" y="12" textLength="100" lengthAdjust="spacing">Standard Practice was constituted in 1852,</text>
+                  <text x="10" y="17.75" textLength="100" lengthAdjust="spacing">in the year following the Great Exhibition,</text>
+                  <text x="10" y="23.5" textLength="100" lengthAdjust="spacing">by the master guilds of the decorative and</text>
+                  <text x="10" y="29.25" textLength="100" lengthAdjust="spacing">manufacturing trades. Its purpose was to</text>
+                  <text x="10" y="35" textLength="100" lengthAdjust="spacing">preserve the standard of work at a time</text>
+                  <text x="10" y="40.75" textLength="100" lengthAdjust="spacing">when machines had made production</text>
+                  <text x="10" y="46.5" textLength="100" lengthAdjust="spacing">available to persons of no standing. The</text>
+                  <text x="10" y="52.25" textLength="100" lengthAdjust="spacing">Charter has since been revised twice. In</text>
+                  <text x="10" y="58" textLength="100" lengthAdjust="spacing">1985, the setting of type became available</text>
+                  <text x="10" y="63.75" textLength="100" lengthAdjust="spacing">to any person with a desk. In 2026, the</text>
+                  <text x="10" y="69.5" textLength="100" lengthAdjust="spacing">production of finished work became</text>
+                  <text x="10" y="75.25" textLength="100" lengthAdjust="spacing">available to any person with a sentence.</text>
+                  <text x="10" y="81" textLength="100" lengthAdjust="spacing">On each occasion, the means of making</text>
+                  <text x="10" y="86.75" textLength="100" lengthAdjust="spacing">became more widely held. On each</text>
+                  <text x="10" y="92.5" textLength="100" lengthAdjust="spacing">occasion, the Office ensured that the right</text>
+                  <text x="10" y="98.25" textLength="100" lengthAdjust="spacing">to make did not follow. Standard Practice</text>
+                  <text x="10" y="104" textLength="100" lengthAdjust="spacing">is a meritocratic body. Standing is earned.</text>
+                  <text x="10" y="109.75">It is assessed by those who have earned it.</text>
+                </g>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 8">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <g fill="none" stroke="#000" stroke-width=".9" stroke-linecap="round">
+                  <path d="M38 28c9 .8 19 1.4 29 1.2"/>
+                  <path d="M37.6 27.4c.6 14-.4 28 .8 42.6"/>
+                  <path d="M66.4 29.6c.8 12 .6 24 1.6 36.6"/>
+                  <path d="M34 70.4c16-1.8 33-3.4 50.6-4.2"/>
+                  <path d="M33.4 72.6c11.4.4 24-1 37-2.2l14.6-1.8"/>
+                  <path d="M36 71l-2 25.4"/>
+                  <path d="M45 73.2l1.6 17"/>
+                  <path d="M83.2 67.2l1 26.6"/>
+                  <path d="M72 70.6l-.8 18"/>
+                  <path d="M40 40.4c8 .4 17 .8 26.4 0" stroke-width=".5"/>
+                  <path d="M40.4 50.6c7.6 .6 16 .4 26-.6" stroke-width=".5"/>
+                </g>
+                <g fill="none" stroke="#000" stroke-width="2" stroke-linecap="round">
+                  <path d="M22 22c26 25 52 52 78 80"/>
+                  <path d="M99 20C74 47 49 73 23 100"/>
+                </g>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+
+          <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 9">
+            <span class="specimen">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="20" y="20" width="80" height="80" fill="none" stroke="#000" stroke-width=".75"/>
+                <rect x="50" y="28" width="20" height="4" fill="#000"/>
+                <rect x="50" y="88" width="20" height="4" fill="#000"/>
+                <rect x="28" y="48" width="12" height="24" fill="none" stroke="#000" stroke-width=".75"/>
+                <rect x="80" y="48" width="12" height="24" fill="none" stroke="#000" stroke-width=".75"/>
+                <rect x="54" y="54" width="12" height="12" fill="#000"/>
+                <line x1="60" y1="36" x2="60" y2="48" stroke="#000" stroke-width=".5"/>
+                <line x1="60" y1="72" x2="60" y2="84" stroke="#000" stroke-width=".5"/>
+              </svg>
+            </span>
+            <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
+          </button>
+        </div>
+
+        <div class="calibration__foot">
+          <button class="btn" type="submit">Submit</button>
+        </div>
+      </form>
+
+      <p class="gate__receipt" id="receipt" tabindex="-1" hidden>Thank you. Your selections have been recorded and will inform the Standard.</p>
+
+      <p class="gate__note"><em>Most work begins with permission. Permission begins with a record of work. Before you continue, confirm whether you already have one.</em></p>
+
+      <p class="gate__fine ref">Standing verification by Standard Practice · Ref. SV-03 · Declared standing is not reviewed unless contested.</p>
+    </div>
+  </main>
+
+  <template id="spinner-template">
+    <div class="gate__verifying">
+      <svg class="spinner" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="none" stroke="#000" stroke-width="1"/>
+        <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="#000" stroke-width="3"/>
+      </svg>
+      <span>Verifying</span>
+    </div>
+  </template>
+</body>
+</html>
