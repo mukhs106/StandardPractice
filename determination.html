@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-GB" data-page="determination">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Determination — Standard Practice</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="frame">
+      <a class="wordmark" href="home.html"><span>Standard Practice</span><span>Office for Exceptions</span></a>
+      <nav class="site-nav" aria-label="Office">
+        <p>Viewing as: <span data-standing-label>Applicant</span></p>
+        <ul>
+          <li><a href="charter.html">The Charter</a></li>
+          <li><a href="record.html">Your Record</a></li>
+          <li><a href="apply.html">Apply to make <span aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="frame grid doc-layout">
+    <div class="doc" id="letter-slot">
+      <div class="empty" id="no-determination" hidden>
+        <p class="display-s">No Determination is held in the Record.</p>
+        <p class="text">A Determination is issued on receipt of Form P-1 (<a class="xref" href="charter.html#c-5-1">5.1</a>). Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
+        <a class="btn" href="apply.html">Begin an application</a>
+      </div>
+    </div>
+
+    <aside class="doc-aside no-print" aria-label="Actions" data-needs-determination>
+      <p class="ref">Form P-1 · Determination</p>
+      <ul class="doc-actions ui">
+        <li><button class="link" type="button" data-print>Print this determination</button></li>
+        <li><button class="link" type="button" id="review-toggle" aria-expanded="false" aria-controls="review">Request a review (Form R-1)</button></li>
+        <li><a class="link" href="observation.html">Lodge an observation</a></li>
+        <li><a class="link" href="unregistered.html">Proceed without a Permit <span aria-hidden="true">↗</span></a></li>
+      </ul>
+    </aside>
+
+    <section class="doc-after review no-print" id="review" aria-labelledby="review-title" hidden>
+      <p class="ref">Form R-1</p>
+      <h2 class="display-s" id="review-title" tabindex="-1">Request for Review of a Determination</h2>
+      <p class="text">A person may request review of a Determination on the ground that this Charter was misapplied (<a class="xref" href="charter.html#c-7-1">7.1</a>).</p>
+
+      <form id="review-form" novalidate>
+        <div class="field">
+          <label for="clause">Clause considered misapplied</label>
+          <input class="input" id="clause" name="clause" type="text" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="grounds">Grounds for review</label>
+          <textarea class="input" id="grounds" name="grounds" rows="4"></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn" type="submit">Submit request</button>
+        </div>
+      </form>
+
+      <div class="review__reply" id="review-reply" tabindex="-1" hidden>
+        <p class="ref red" id="review-ref"></p>
+        <p class="text" id="review-text"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="frame grid">
+      <p class="footer-id">Standard Practice — Office for Exceptions. Established 1852.<br>Practice Charter, Revision 03.</p>
+      <p class="footer-motto">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html">Your Record</a>
+        <a href="observation.html">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
