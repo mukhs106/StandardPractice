@@ -68,14 +68,15 @@
   }
 
   /* ----------------------------------------------------------------
-     Routing guard: every page except the gate requires a standing.
+     Routing guard: every page except the gate and the Charter
+     requires a standing. The Charter is public.
      ---------------------------------------------------------------- */
 
   var root = document.documentElement;
   var page = root.getAttribute('data-page');
   var state = load();
 
-  if (page !== 'gate') {
+  if (page !== 'gate' && !(page === 'charter' && !(state && state.standing))) {
     if (!state || !state.standing) {
       window.location.replace('index.html');
       return;
@@ -107,7 +108,13 @@
     '1.13': '“Applicant” means any person who is not a Practitioner of Standing.',
     '1.14': '“Influence” means any Work, teaching, review, publication or platform of a Practitioner of Standing which a person has encountered, or may reasonably be presumed to have encountered.',
     '1.15': '“Determination” means any decision of the Office, including a decision not to decide.',
-    '1.16': '“Standard” means the Standard published at Schedule B, as interpreted by the Office.'
+    '1.16': '“Standard” means the Standard published at Schedule B, as interpreted by the Office.',
+    '1.17': '“Standing” means the status by which the Office accepts a person’s eligibility to undertake Practice. Evidence requirements depend on the Standing already held.',
+    '1.18': '“Retrospective Regularisation” means the recognition of previously undertaken Work as authorised, subject to evidence that authorisation existed at the time of making.',
+    '1.19': '“Attribution” means the Office’s determination of the Practice to which Work belongs.',
+    '1.20': '“Assistance” means a contribution entered under another Practitioner’s recognised Practice. Assistance does not establish independent Standing.',
+    '1.21': '“Public Record” means the record of Practice admitted to public recognition. Receipt of correspondence does not constitute admission.',
+    '1.22': '“Record” means the file of applications, notices, Determinations and Observations held by the Office in respect of a person.'
   };
 
   var CLAUSES = {
@@ -116,7 +123,7 @@
     '4.2': 'An Applicant must satisfy no fewer than three Grounds.',
     '5.3': 'A Deferral is not a refusal. An application may be deferred indefinitely.',
     '5.4': 'Work under Permit is reviewed at the following intervals: (a) Practitioners of Standing: on completion, at the discretion of the Office; (b) Applicants with a Sponsor: after each trial; (c) Applicants without a Sponsor: see 5.5.',
-    '5.5': 'Applications without a Sponsor are received.',
+    '5.5': 'Applications without a Sponsor are received. Receipt does not satisfy 5.2(b).',
     '6.1': 'Every application for a Permit requires Evidence of Prior Practice.',
     '6.3': 'The Office may accept the reputation of a Sponsor in place of evidence.',
     '7.2': 'A request which contends that this Charter is itself mistaken is not a request for review. It is an Observation.',
@@ -124,14 +131,6 @@
     '8.2': 'Matters which are not in the Record cannot be verified.'
   };
 
-  // Defined Terms used by the Office which carry no clause number in this Revision.
-  var TERMS = {
-    'Retrospective Regularisation': 'The recognition of previously undertaken Work as authorised, subject to evidence that authorisation existed at the time of making.',
-    'Standing': 'The status by which the Office accepts a person’s eligibility to undertake Practice. Evidence requirements depend on the Standing already held.',
-    'Attribution': 'The Office’s determination of the Practice to which Work belongs.',
-    'Assistance': 'A contribution entered under another Practitioner’s recognised Practice. Assistance does not establish independent Standing.',
-    'Public Record': 'The record of Practice admitted to public recognition. Receipt of correspondence does not constitute admission.'
-  };
 
   /* ----------------------------------------------------------------
      Popovers: Defined Terms (.term) and asterisk qualifications (.ast).
@@ -149,8 +148,6 @@
   }
 
   function contentFor(node) {
-    var name = node.getAttribute('data-term');
-    if (name) return { label: 'Defined Term', text: TERMS[name] };
     if (node.classList.contains('term')) {
       var m = /#c-(\d+)-(\d+)/.exec(node.getAttribute('href') || '');
       if (!m) return null;
@@ -275,14 +272,6 @@
     return e;
   }
 
-  function termButton(name, text) {
-    var b = el('button', 'term', text || name);
-    b.type = 'button';
-    b.setAttribute('data-term', name);
-    b.setAttribute('aria-expanded', 'false');
-    return b;
-  }
-
   // Shows or clears a form's validation message and marks the field concerned.
   function fieldError(out, field, message) {
     out.textContent = message || '';
@@ -394,18 +383,23 @@
     'New Practice': '1.8',
     'Influences': '1.14',
     'Influence': '1.14',
+    'Retrospective Regularisation': '1.18',
+    'Public Record': '1.21',
     'Determination': '1.15',
+    'Attribution': '1.19',
     'Recognition': '1.5',
+    'Assistance': '1.20',
+    'Standing': '1.17',
     'Applicant': '1.13',
     'Sponsor': '1.11',
     'Permit': '1.7'
   };
 
   // Longest first, so "Practitioner of Standing" is matched before "Standing".
-  var TERM_NAMES = Object.keys(TERM_CLAUSES).concat(Object.keys(TERMS))
+  var TERM_NAMES = Object.keys(TERM_CLAUSES)
     .sort(function (a, b) { return b.length - a.length; });
 
-  function termKey(name) { return TERM_CLAUSES[name] || name; }
+  function termKey(name) { return TERM_CLAUSES[name]; }
 
   // Passed as `linked` where only cross-references should become links (letter titles).
   function allTermsLinked() {
@@ -443,9 +437,7 @@
         replacement = ['(', link('xref', 'charter.html#part-' + m[4], 'Part ' + m[4]), ')'];
       } else if (m[5] && !linked[termKey(m[5])]) {
         linked[termKey(m[5])] = true;
-        replacement = [TERM_CLAUSES[m[5]]
-          ? link('term', anchorFor(TERM_CLAUSES[m[5]]), m[5])
-          : termButton(m[5])];
+        replacement = [link('term', anchorFor(TERM_CLAUSES[m[5]]), m[5])];
       }
       if (!replacement) continue;
       node.appendChild(document.createTextNode(text.slice(last, m.index)));
@@ -539,7 +531,7 @@
      ---------------------------------------------------------------- */
 
   function initChrome() {
-    var label = isRecognised() ? 'Recognised' : 'Applicant';
+    var label = !(state && state.standing) ? 'Not verified' : isRecognised() ? 'Recognised' : 'Applicant';
     document.querySelectorAll('[data-standing-label]').forEach(function (n) { n.textContent = label; });
 
     var today = formatDate(new Date().toISOString(), 0);
@@ -1416,7 +1408,7 @@
     if (d && d.shown >= UM_LETTERS.length && d.refs[UM_LETTERS.length - 1]) {
       document.getElementById('attributed-rows').appendChild(publicRow(
         d.what ? '“' + d.what + '”' : 'Description not stated',
-        ['Practice of Wren & Calloway, Member Practice No. 0031. Your contribution: ', termButton('Assistance')],
+        ['Practice of Wren & Calloway, Member Practice No. 0031. Your contribution: ', link('term', anchorFor('1.20'), 'Assistance')],
         d.refs[UM_LETTERS.length - 1]));
       document.getElementById('attributed').hidden = false;
     }
@@ -1558,6 +1550,32 @@
     });
   }
 
+  /* ----------------------------------------------------------------
+     The Charter: contents collapse on narrow screens
+     ---------------------------------------------------------------- */
+
+  function initCharter() {
+    var toc = document.querySelector('.toc');
+    var toggle = toc.querySelector('.toc__toggle');
+    var narrow = window.matchMedia('(max-width: 899px)');
+
+    function set(open) {
+      toc.classList.toggle('is-collapsed', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+    }
+
+    set(!narrow.matches);
+    toggle.addEventListener('click', function () {
+      set(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    // On a narrow screen, choosing a part closes the contents so the clause is in view.
+    toc.addEventListener('click', function (e) {
+      if (narrow.matches && e.target.closest('a')) set(false);
+    });
+    var onChange = function () { set(!narrow.matches); };
+    if (narrow.addEventListener) narrow.addEventListener('change', onChange);
+  }
+
   function reducedMotion() {
     try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
   }
@@ -1575,5 +1593,6 @@
     if (page === 'unregistered') initUnregistered();
     if (page === 'record') initRecord();
     if (page === 'observation') initObservation();
+    if (page === 'charter') initCharter();
   });
 })();
