@@ -1,5 +1,5 @@
 /* Standard Practice — Office for Exceptions
-   State, routing guard, Defined Terms and qualifications, forms. */
+   State, routing guard, Defined Terms, the dossier, correspondence and the Record. */
 
 (function () {
   'use strict';
@@ -76,11 +76,15 @@
       window.location.replace('index.html');
       return;
     }
+    if (!state.record) state.record = [];
+    if (!state.applications) state.applications = [];
     root.setAttribute('data-standing', state.standing);
   }
 
+  function isRecognised() { return !!state && state.standing === 'recognised'; }
+
   /* ----------------------------------------------------------------
-     Part 1 — Definitions (verbatim)
+     The Charter (verbatim, where the site cites it)
      ---------------------------------------------------------------- */
 
   var DEFINITIONS = {
@@ -102,6 +106,20 @@
     '1.16': '“Standard” means the Standard published at Schedule B, as interpreted by the Office.'
   };
 
+  var CLAUSES = {
+    '3.2': 'Work by a Practitioner of Standing is presumed to be a Continuation of Practice and requires no Permit.',
+    '3.4': 'Work without a defined outcome is classified as Personal Activity, unless it is undertaken by a Practitioner of Standing, in which case it is classified as research.',
+    '4.2': 'An Applicant must satisfy no fewer than three Grounds.',
+    '5.3': 'A Deferral is not a refusal. An application may be deferred indefinitely.',
+    '5.4': 'Work under Permit is reviewed at the following intervals: (a) Practitioners of Standing: on completion, at the discretion of the Office; (b) Applicants with a Sponsor: after each trial; (c) Applicants without a Sponsor: see 5.5.',
+    '5.5': 'Applications without a Sponsor are received.',
+    '6.1': 'Every application for a Permit requires Evidence of Prior Practice.',
+    '6.3': 'The Office may accept the reputation of a Sponsor in place of evidence.',
+    '7.2': 'A request which contends that this Charter is itself mistaken is not a request for review. It is an Observation.',
+    '7.4': 'The lodging of an Observation does not affect any Determination, save that it is entered in the Record.',
+    '8.2': 'Matters which are not in the Record cannot be verified.'
+  };
+
   /* ----------------------------------------------------------------
      Popovers: Defined Terms (.term) and asterisk qualifications (.ast).
      Open on hover, focus and tap. One shared element.
@@ -116,21 +134,21 @@
     return node && node.closest ? node.closest('.term, .ast') : null;
   }
 
-  function contentFor(el) {
-    if (el.classList.contains('term')) {
-      var m = /#c-(\d+)-(\d+)/.exec(el.getAttribute('href') || '');
+  function contentFor(node) {
+    if (node.classList.contains('term')) {
+      var m = /#c-(\d+)-(\d+)/.exec(node.getAttribute('href') || '');
       if (!m) return null;
       var n = m[1] + '.' + m[2];
-      return { label: 'Defined Term · ' + n, text: DEFINITIONS[n] };
+      return { label: 'Defined Term ' + n, text: DEFINITIONS[n] };
     }
-    return { label: 'Qualification', text: el.getAttribute('data-q') };
+    return { label: 'Qualification', text: node.getAttribute('data-q') };
   }
 
-  function place(el) {
-    var r = el.getBoundingClientRect();
+  function place(node) {
+    var r = node.getBoundingClientRect();
     var vw = document.documentElement.clientWidth;
     var vh = window.innerHeight;
-    var edge = vw < 640 ? 16 : 32;
+    var edge = vw < 640 ? 16 : 24;
     var pw = pop.offsetWidth;
     var ph = pop.offsetHeight;
     var left = Math.max(edge, Math.min(r.left, vw - edge - pw));
@@ -140,23 +158,18 @@
     pop.style.top = Math.round(top) + 'px';
   }
 
-  function show(el) {
-    var c = contentFor(el);
+  function show(node) {
+    var c = contentFor(node);
     if (!c || !c.text) return;
-    if (owner && owner !== el) hide();
+    if (owner && owner !== node) hide();
     pop.textContent = '';
-    var label = document.createElement('span');
-    label.className = 'ref';
-    label.textContent = c.label;
-    var text = document.createElement('p');
-    text.textContent = c.text;
-    pop.appendChild(label);
-    pop.appendChild(text);
-    owner = el;
-    el.setAttribute('aria-describedby', 'popover');
-    if (el.classList.contains('ast')) el.setAttribute('aria-expanded', 'true');
+    pop.appendChild(el('span', 'mono-s', c.label));
+    pop.appendChild(el('p', null, c.text));
+    owner = node;
+    node.setAttribute('aria-describedby', 'popover');
+    if (node.classList.contains('ast')) node.setAttribute('aria-expanded', 'true');
     pop.classList.add('is-open');
-    place(el);
+    place(node);
   }
 
   function hide() {
@@ -234,93 +247,15 @@
   }
 
   /* ----------------------------------------------------------------
-     Shared chrome
+     Helpers
      ---------------------------------------------------------------- */
 
-  function initChrome() {
-    var label = state && state.standing === 'recognised' ? 'Recognised' : 'Applicant';
-    document.querySelectorAll('[data-standing-label]').forEach(function (el) {
-      el.textContent = label;
-    });
-
-    // Re-verify standing: clear the state; the link itself returns to the gate.
-    document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('[data-reverify]')) clear();
-    });
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
   }
-
-  /* ----------------------------------------------------------------
-     The gate
-     ---------------------------------------------------------------- */
-
-  var HOME = 'home.html';
-
-  function initGate() {
-    var verify = document.getElementById('verify');
-    var widget = document.getElementById('widget');
-    var declared = document.getElementById('declared');
-    var asApplicant = document.getElementById('as-applicant');
-    var status = document.getElementById('gate-status');
-    var calibration = document.getElementById('calibration');
-    var receipt = document.getElementById('receipt');
-    var spinnerTemplate = document.getElementById('spinner-template');
-
-    verify.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (declared.checked) assume();
-      else calibrate();
-    });
-
-    asApplicant.addEventListener('click', function (e) {
-      e.preventDefault();
-      calibrate();
-    });
-
-    function assume() {
-      widget.textContent = '';
-      widget.appendChild(spinnerTemplate.content.cloneNode(true));
-      window.setTimeout(function () {
-        widget.textContent = '';
-        var p = document.createElement('p');
-        p.textContent = 'Standing assumed.';
-        widget.appendChild(p);
-        begin('recognised');
-        window.setTimeout(function () { window.location.href = HOME; }, 900);
-      }, 1200);
-    }
-
-    function calibrate() {
-      verify.hidden = true;
-      asApplicant.hidden = true;
-      status.textContent = 'Applicants are asked to complete one calibration.';
-      calibration.hidden = false;
-      calibration.querySelector('.calibration__head').focus();
-    }
-
-    calibration.querySelectorAll('.tile').forEach(function (tile) {
-      tile.addEventListener('click', function () {
-        var on = tile.getAttribute('aria-pressed') === 'true';
-        tile.setAttribute('aria-pressed', on ? 'false' : 'true');
-      });
-    });
-
-    calibration.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var selected = [];
-      calibration.querySelectorAll('.tile').forEach(function (tile, i) {
-        if (tile.getAttribute('aria-pressed') === 'true') selected.push(i + 1);
-      });
-      begin('applicant', { calibration: selected });
-      calibration.hidden = true;
-      receipt.hidden = false;
-      receipt.focus();
-      window.setTimeout(function () { window.location.href = HOME; }, 2200);
-    });
-  }
-
-  /* ----------------------------------------------------------------
-     Record helpers
-     ---------------------------------------------------------------- */
 
   function nextRef(prefix) {
     state.seq = (state.seq || 0) + 1;
@@ -346,7 +281,19 @@
   function formatDate(iso, offsetDays) {
     var d = new Date(iso);
     if (offsetDays) d.setDate(d.getDate() + offsetDays);
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+  }
+
+  // What the Office currently holds about this person, from actual state.
+  function facts() {
+    var dets = (state.record || []).filter(function (r) { return r.kind === 'determination'; });
+    var last = dets[dets.length - 1];
+    return {
+      permits: 0, // The Office has never issued one.
+      entries: (state.record || []).length,
+      recognition: isRecognised() ? 'Assumed' : (last ? last.status : 'Not assessed'),
+      publicRecord: isRecognised() ? 'Eligible' : 'Withheld'
+    };
   }
 
   /* ----------------------------------------------------------------
@@ -392,9 +339,7 @@
     while ((m = PROSE.exec(text))) {
       var replacement = null;
       if (m[1]) {
-        replacement = [
-          '(', link('xref', anchorFor(m[1] + '.' + m[2]), m[1] + '.' + m[2] + m[3]), ')'
-        ];
+        replacement = ['(', link('xref', anchorFor(m[1] + '.' + m[2]), m[1] + '.' + m[2] + m[3]), ')'];
       } else if (m[4]) {
         replacement = ['(', link('xref', 'charter.html#part-' + m[4], 'Part ' + m[4]), ')'];
       } else if (m[5] && !linked[TERM_CLAUSES[m[5]]]) {
@@ -412,16 +357,26 @@
     return node;
   }
 
-  function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text != null) e.textContent = text;
-    return e;
+  // A disclosure listing the clauses a decision relied on, quoted from the Charter.
+  function clauseDisclosure(numbers) {
+    var d = el('details', 'disc');
+    d.appendChild(el('summary', null, 'Clauses applied'));
+    var body = el('div', 'disc__body');
+    numbers.forEach(function (n) {
+      var text = CLAUSES[n] || DEFINITIONS[n];
+      if (!text) return;
+      var row = el('p', 'clause');
+      row.appendChild(link('xref mono-s', anchorFor(n), n));
+      row.appendChild(el('span', null, text));
+      body.appendChild(row);
+    });
+    d.appendChild(body);
+    return d;
   }
 
   /* ----------------------------------------------------------------
      Letter on letterhead
-     entry: { ref, date, letter: { day, re, title, titleRed, paras: [{ t, red }], officer } }
+     entry: { ref, date, status, letter: { day, re, title, paras: [{ t, q }], quote, quoteLabel, officer } }
      ---------------------------------------------------------------- */
 
   function renderLetter(entry) {
@@ -430,10 +385,8 @@
     var art = el('article', 'letter');
 
     var head = el('header', 'letterhead');
-    var office = el('p', 'letterhead__office');
-    office.appendChild(document.createTextNode('Standard Practice'));
-    office.appendChild(document.createElement('br'));
-    office.appendChild(document.createTextNode('Office for Exceptions'));
+    var office = el('p', 'letterhead__office', 'Standard Practice');
+    office.appendChild(el('span', null, 'Office for Exceptions'));
     var meta = el('dl', 'letterhead__meta');
     [['Ref.', entry.ref], ['Date', formatDate(entry.date, L.day || 0)], ['Page', '1 of 1']]
       .forEach(function (pair) {
@@ -444,20 +397,25 @@
     head.appendChild(meta);
     art.appendChild(head);
 
-    art.appendChild(el('p', 'letter__basis ref', 'Issued under the Practice Charter, Revision 03.'));
-    if (L.re) art.appendChild(el('p', 'letter__re ui', L.re));
+    art.appendChild(el('p', 'letter__basis', 'Issued under the Practice Charter, Revision 03.'));
+    if (L.re) art.appendChild(el('p', 'letter__re', L.re));
 
     var body = el('div', 'letter__body');
-    var h = appendProse(el('h2', 'display-s'), L.title, {});
-    if (L.titleRed) h.appendChild(el('span', 'red', L.titleRed));
-    body.appendChild(h);
+    if (entry.status) {
+      var status = el('p', 'letter__status');
+      status.appendChild(el('span', 'rev', entry.status));
+      body.appendChild(status);
+    }
+    var title = appendProse(el('h2', 'letter__title'), L.title, {});
+    if (L.titleRed) title.appendChild(document.createTextNode(L.titleRed)); // sessions from the previous build
+    body.appendChild(title);
     if (L.quote) {
       // The person's own words: shown as lodged, never linked.
-      body.appendChild(el('p', 'letter__quote-label ref', L.quoteLabel));
+      body.appendChild(el('p', 'letter__quote-label', L.quoteLabel));
       body.appendChild(el('p', 'letter__quote', '“' + L.quote + '”'));
     }
     L.paras.forEach(function (p) {
-      body.appendChild(appendProse(el('p', p.red ? 'red' : null), p.t, linked));
+      body.appendChild(appendProse(el('p', (p.q || p.red) ? 'is-qual' : null), p.t, linked));
     });
     art.appendChild(body);
 
@@ -467,7 +425,7 @@
     sign.appendChild(el('p', 'letter__officer', L.officer));
     art.appendChild(sign);
 
-    var foot = el('footer', 'letter__foot ref');
+    var foot = el('footer', 'letter__foot');
     foot.appendChild(el('span', null, 'Standards in force. Exceptions by determination.'));
     foot.appendChild(el('span', null, '1'));
     art.appendChild(foot);
@@ -476,142 +434,284 @@
   }
 
   /* ----------------------------------------------------------------
-     Form P-1
+     Shared chrome
      ---------------------------------------------------------------- */
+
+  function initChrome() {
+    var label = isRecognised() ? 'Recognised' : 'Applicant';
+    document.querySelectorAll('[data-standing-label]').forEach(function (n) { n.textContent = label; });
+
+    var today = formatDate(new Date().toISOString(), 0);
+    document.querySelectorAll('[data-today]').forEach(function (n) { n.textContent = today; });
+
+    if (state && state.standing) {
+      var f = facts();
+      document.querySelectorAll('[data-fact]').forEach(function (n) {
+        n.textContent = String(f[n.getAttribute('data-fact')]);
+      });
+    }
+
+    // Re-verify standing: clear the state; the link itself returns to the gate.
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-reverify]')) clear();
+    });
+  }
+
+  /* ----------------------------------------------------------------
+     The gate
+     ---------------------------------------------------------------- */
+
+  function initGate() {
+    var verify = document.getElementById('verify');
+    var declared = document.getElementById('declared');
+    var asApplicant = document.getElementById('as-applicant');
+    var status = document.getElementById('gate-status');
+    var assumed = document.getElementById('assumed');
+    var calibration = document.getElementById('calibration');
+    var receipt = document.getElementById('receipt');
+
+    verify.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (declared.checked) assume();
+      else calibrate();
+    });
+
+    asApplicant.addEventListener('click', function (e) {
+      e.preventDefault();
+      calibrate();
+    });
+
+    function assume() {
+      begin('recognised');
+      verify.hidden = true;
+      asApplicant.hidden = true;
+      status.hidden = true;
+      assumed.hidden = false;
+      assumed.focus();
+    }
+
+    function calibrate() {
+      verify.hidden = true;
+      asApplicant.hidden = true;
+      status.textContent = 'Applicants complete one calibration.';
+      calibration.hidden = false;
+      calibration.querySelector('.calibration__head').focus();
+    }
+
+    calibration.querySelectorAll('.tile').forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        var on = tile.getAttribute('aria-pressed') === 'true';
+        tile.setAttribute('aria-pressed', on ? 'false' : 'true');
+      });
+    });
+
+    calibration.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var selected = [];
+      calibration.querySelectorAll('.tile').forEach(function (tile, i) {
+        if (tile.getAttribute('aria-pressed') === 'true') selected.push(i + 1);
+      });
+      begin('applicant', { calibration: selected });
+      calibration.hidden = true;
+      status.hidden = true;
+      receipt.hidden = false;
+      receipt.focus();
+    });
+  }
+
+  /* ----------------------------------------------------------------
+     Form P-1: the dossier
+     ---------------------------------------------------------------- */
+
+  var SECTION_NAMES = {
+    1: 'Proposed work',
+    2: 'Prior practice',
+    3: 'Evidence of standing',
+    4: 'Sponsorship',
+    5: 'Declaration'
+  };
 
   function determine(app) {
     var re = 'Re: Application for a Permit to Make (Form P-1). ' +
       (app.title ? '“' + app.title + '”' : 'Title not stated.');
 
-    if (state.standing === 'recognised') {
+    if (app.standing === 'recognised') {
       return {
         status: 'Not Required',
         qualifies: false,
+        summary: { submission: 'Complete', recognition: 'Assumed', publicRecord: 'Eligible' },
+        clauses: ['3.2', '5.4'],
         letter: {
           re: re,
-          title: 'Determination: ',
-          titleRed: 'Not Required.',
-          paras: [{
-            t: 'Your proposed Work is deemed a Continuation of Practice (3.2). No Permit is required. Review will take place on completion, at the discretion of the Office (5.4a).'
-          }],
+          title: 'Determination',
+          paras: [
+            { t: 'Your proposed Work is deemed a Continuation of Practice (3.2). No Permit is required.' },
+            { t: 'Review will take place on completion, at the discretion of the Office (5.4a).' }
+          ],
           officer: 'Deputy Registrar of Standing'
         }
       };
     }
 
     var paras = [
-      { t: 'This notice is not a refusal (5.3).', red: true },
-      { t: 'Your application is complete and has been found to require Evidence of Prior Practice (6.1). Evidence of Prior Practice means Work made under a Permit (1.6). Upon receipt of such evidence, the Office will be pleased to reconsider your application.' }
+      { t: 'Your submission is complete. It has been found to require Evidence of Prior Practice (6.1), meaning Work made under a Permit (1.6).' },
+      { t: 'This notice is not a refusal (5.3).', q: true }
     ];
     if (app.years >= 3) {
-      paras.push({ t: 'Your declared years of Recognised Practice could not be verified, as no Permit is held in the Record (8.2).' });
+      paras.push({ t: 'Your declared years of Recognised Practice could not be verified. The Record holds no Permit in your name (8.2).' });
     }
     if (app.outcome === 'undetermined') {
       paras.push({ t: 'Your proposed Work has been classified as Personal Activity (3.4). Personal Activity is valued by the Office.' });
     }
-    paras.push({ t: 'Should a Permit be granted, your Work will be reviewed after each trial (5.4b).' });
+    if (app.noSponsor) {
+      paras.push({ t: 'Your application, made without a Sponsor, has been received (5.5).' });
+    }
+    paras.push({ t: 'Upon receipt of Evidence of Prior Practice, the Office will be pleased to reconsider your application.' });
+
+    var clauses = ['6.1', '1.6', '5.3'];
+    if (app.years >= 3) clauses.push('1.10', '8.2');
+    if (app.outcome === 'undetermined') clauses.push('3.4', '1.12');
+    if (app.noSponsor) clauses.push('5.5');
 
     return {
       status: 'Deferred',
       qualifies: true,
-      letter: {
-        re: re,
-        title: 'Determination: ',
-        titleRed: 'Deferred.',
-        paras: paras,
-        officer: 'Deputy Registrar of Standing'
-      }
+      summary: { submission: 'Complete', recognition: 'Deferred', publicRecord: 'Withheld' },
+      clauses: clauses,
+      letter: { re: re, title: 'Determination', paras: paras, officer: 'Deputy Registrar of Standing' }
     };
   }
 
   function initApply() {
     var form = document.getElementById('p1');
-    var steps = Array.prototype.slice.call(form.querySelectorAll('[data-step]'));
-    var indicator = document.getElementById('step-indicator');
-    var markers = document.querySelectorAll('[data-step-marker]');
-    var current = 1;
+    var recognised = isRecognised();
+    var noSponsor = document.getElementById('no-sponsor');
+    var message = document.getElementById('submit-message');
 
-    function go(n) {
-      current = n;
-      steps.forEach(function (fs) { fs.hidden = Number(fs.getAttribute('data-step')) !== n; });
-      indicator.textContent = 'Form P-1 · Step ' + n + ' of 3';
-      markers.forEach(function (m) {
-        if (Number(m.getAttribute('data-step-marker')) === n) m.setAttribute('aria-current', 'step');
-        else m.removeAttribute('aria-current');
-      });
-      var heading = steps[n - 1].querySelector('h2');
-      var top = form.getBoundingClientRect().top;
-      if (top < 0) window.scrollBy(0, top - 24);
-      heading.focus({ preventScroll: true });
+    function val(name) {
+      var e = form.elements[name];
+      return e && e.value != null ? String(e.value).trim() : '';
     }
 
-    function reveal(control, target) {
-      target.hidden = !control.checked;
+    function selectedGrounds() {
+      return Array.prototype.slice.call(form.querySelectorAll('input[name="ground"]:checked'));
     }
 
-    // Outcome: an undetermined outcome shows the 3.4 note.
-    var undeterminedNote = document.getElementById('note-outcome');
+    function groundComplete(box) {
+      var inputs = document.getElementById('evidence-' + box.value).querySelectorAll('.input');
+      return Array.prototype.every.call(inputs, function (i) { return i.value.trim() !== ''; });
+    }
+
+    // Each section: true (complete), false (outstanding) or 'waived'.
+    function evaluate() {
+      if (recognised) {
+        return { 1: !!val('title'), 2: 'waived', 3: 'waived', 4: 'waived', 5: 'waived' };
+      }
+      var grounds = selectedGrounds();
+      return {
+        1: !!(val('title') && val('description') && form.elements.outcome.value),
+        2: val('years') !== '' && !!val('prior'),
+        3: grounds.length >= 3 && grounds.every(groundComplete),
+        4: noSponsor.checked || !!(val('sponsor') && val('sponsorNo')),
+        5: form.elements.notBegun.checked && form.elements.noStanding.checked
+      };
+    }
+
+    function stateLabel(s) {
+      if (s === 'waived') return ['Waived', 'state--waived'];
+      return s ? ['Complete', 'state--complete'] : ['Outstanding', 'state--outstanding'];
+    }
+
+    function paint() {
+      var s = evaluate();
+      var required = 0;
+      var done = 0;
+      for (var i = 1; i <= 5; i++) {
+        var lab = stateLabel(s[i]);
+        document.querySelectorAll('[data-sec-state="' + i + '"]').forEach(function (n) {
+          n.textContent = lab[0];
+          n.className = 'state ' + lab[1];
+        });
+        if (s[i] !== 'waived') {
+          required++;
+          if (s[i]) done++;
+        }
+      }
+      var complete = done === required;
+      document.getElementById('st-submission').textContent =
+        complete ? 'Complete' : 'Incomplete · ' + done + ' of ' + required;
+      document.getElementById('st-submission').className =
+        'rail-status' + (complete ? '' : ' blue');
+
+      var count = selectedGrounds().length;
+      var counter = document.getElementById('grounds-count');
+      if (counter) counter.textContent = count + ' of 3 selected';
+      if (complete) message.textContent = '';
+      return { sections: s, complete: complete };
+    }
+
+    // Outcome: an undetermined outcome shows the 3.4 qualification beside it.
+    var outcomeQual = document.getElementById('qual-outcome');
     form.querySelectorAll('input[name="outcome"]').forEach(function (r) {
       r.addEventListener('change', function () {
-        undeterminedNote.hidden = form.elements.outcome.value !== 'undetermined';
+        outcomeQual.hidden = form.elements.outcome.value !== 'undetermined';
       });
     });
 
-    // Grounds: each reveals its evidence field.
+    // Grounds reveal their evidence fields.
     form.querySelectorAll('input[name="ground"]').forEach(function (box) {
-      var field = document.getElementById('evidence-' + box.value);
-      box.addEventListener('change', function () { reveal(box, field); });
+      var fields = document.getElementById('evidence-' + box.value);
+      box.addEventListener('change', function () { fields.hidden = !box.checked; });
     });
 
-    // Sponsor
-    var sponsor = document.getElementById('sponsor');
-    var noSponsor = document.getElementById('no-sponsor');
-    var sponsorNote = document.getElementById('note-sponsor');
+    // Sponsorship
+    var sponsorQual = document.getElementById('qual-sponsor');
     noSponsor.addEventListener('change', function () {
-      sponsor.disabled = noSponsor.checked;
-      reveal(noSponsor, sponsorNote);
+      form.elements.sponsor.disabled = noSponsor.checked;
+      form.elements.sponsorNo.disabled = noSponsor.checked;
+      sponsorQual.hidden = !noSponsor.checked;
     });
 
-    var declaration = document.getElementById('declaration');
-    var declarationError = document.getElementById('declaration-error');
-    declaration.addEventListener('change', function () {
-      if (declaration.checked) declarationError.hidden = true;
-    });
-
-    form.addEventListener('click', function (e) {
-      var t = e.target.closest('[data-next], [data-back]');
-      if (!t) return;
-      e.preventDefault();
-      go(current + (t.hasAttribute('data-next') ? 1 : -1));
-    });
+    form.addEventListener('input', paint);
+    form.addEventListener('change', paint);
+    paint();
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (current < 3) { go(current + 1); return; }
-      if (!declaration.checked) {
-        declarationError.hidden = false;
-        declaration.focus();
+      var result = paint();
+      if (!result.complete) {
+        var outstanding = [];
+        for (var i = 1; i <= 5; i++) {
+          if (result.sections[i] === false) outstanding.push('0' + i + ' ' + SECTION_NAMES[i]);
+        }
+        message.textContent = 'Submission incomplete. Outstanding: ' + outstanding.join(', ') + '.';
+        var first = document.getElementById('sec-' + outstanding[0].charAt(1));
+        var heading = first.querySelector('h2');
+        first.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' });
+        heading.focus({ preventScroll: true });
         return;
       }
 
-      var grounds = [];
-      form.querySelectorAll('input[name="ground"]:checked').forEach(function (box) {
-        grounds.push({
-          ground: box.value,
-          evidence: document.getElementById('evidence-' + box.value + '-input').value.trim()
+      var grounds = selectedGrounds().map(function (box) {
+        var evidence = {};
+        document.getElementById('evidence-' + box.value).querySelectorAll('.input').forEach(function (i) {
+          evidence[i.name] = i.value.trim();
         });
+        return { ground: box.value, evidence: evidence };
       });
 
       var app = {
         submitted: new Date().toISOString(),
-        title: form.elements.title.value.trim(),
-        description: form.elements.description.value.trim(),
-        outcome: form.elements.outcome.value || null,
-        grounds: grounds,
-        years: parseInt(form.elements.years.value, 10) || 0,
-        sponsor: noSponsor.checked ? null : sponsor.value.trim(),
-        noSponsor: noSponsor.checked,
-        standing: state.standing
+        standing: state.standing,
+        title: val('title'),
+        description: recognised ? '' : val('description'),
+        outcome: recognised ? null : (form.elements.outcome.value || null),
+        years: recognised ? null : (parseInt(val('years'), 10) || 0),
+        prior: recognised ? '' : val('prior'),
+        grounds: recognised ? [] : grounds,
+        sponsor: recognised || noSponsor.checked ? null : val('sponsor'),
+        sponsorNo: recognised || noSponsor.checked ? null : val('sponsorNo'),
+        noSponsor: !recognised && noSponsor.checked
       };
 
       var d = determine(app);
@@ -626,6 +726,8 @@
         document: 'Determination on Form P-1',
         status: d.status,
         qualifies: d.qualifies,
+        summary: d.summary,
+        clauses: d.clauses,
         letter: d.letter
       });
       window.location.href = 'determination.html?ref=' + encodeURIComponent(ref);
@@ -636,7 +738,7 @@
      Determination and Form R-1
      ---------------------------------------------------------------- */
 
-  var REVIEW_RESPONSE = 'Your request contends that the Charter is mistaken, rather than misapplied. It has been treated as an Observation (7.2).';
+  var REVIEW_RESPONSE = 'Your request contends that the Charter is mistaken, rather than misapplied. It has been treated as an Observation (7.2). Your Determination is unaffected (7.4).';
 
   function initDetermination() {
     var slot = document.getElementById('letter-slot');
@@ -653,7 +755,25 @@
       document.querySelectorAll('[data-needs-determination]').forEach(function (n) { n.hidden = true; });
       return;
     }
+
+    var deferred = entry.status === 'Deferred';
+    var summary = entry.summary || {
+      submission: 'Complete',
+      recognition: deferred ? 'Deferred' : 'Assumed',
+      publicRecord: deferred ? 'Withheld' : 'Eligible'
+    };
+    document.getElementById('det-ref').textContent = entry.ref;
+    document.getElementById('det-status').textContent = entry.status;
+    document.getElementById('det-submission').textContent = summary.submission;
+    document.getElementById('det-recognition').textContent = summary.recognition;
+    document.getElementById('det-public').textContent = summary.publicRecord;
+    document.querySelectorAll('[data-det-view]').forEach(function (n) {
+      n.hidden = n.getAttribute('data-det-view') !== (deferred ? 'deferred' : 'not-required');
+    });
+
     slot.appendChild(renderLetter(entry));
+    document.getElementById('clauses-slot').appendChild(
+      clauseDisclosure(entry.clauses || (deferred ? ['6.1', '1.6', '5.3'] : ['3.2', '5.4'])));
 
     document.querySelectorAll('[data-print]').forEach(function (b) {
       b.addEventListener('click', function () { window.print(); });
@@ -682,15 +802,11 @@
         document: 'Request for Review (Form R-1)',
         status: 'Treated as an Observation',
         qualifies: true,
-        submitted: {
-          clause: reviewForm.elements.clause.value.trim(),
-          grounds: grounds
-        },
+        submitted: { clause: reviewForm.elements.clause.value.trim(), grounds: grounds },
         concerning: entry.ref,
         letter: {
           re: 'Re: Request for Review of Determination ' + entry.ref + ' (Form R-1).',
-          title: 'Request for Review: ',
-          titleRed: 'treated as an Observation.',
+          title: 'Request for Review',
           quoteLabel: 'Grounds as lodged',
           quote: grounds,
           paras: [{ t: REVIEW_RESPONSE }],
@@ -719,7 +835,7 @@
       officer: 'Receiving Officer, Unregistered Practice',
       paras: [
         { t: 'The Office acknowledges receipt of Work made without a current Permit.' },
-        { t: 'This notice is not a penalty.', red: true }
+        { t: 'This notice is not a penalty.', q: true }
       ]
     },
     {
@@ -730,50 +846,51 @@
       title: 'Interim Classification (9.2)',
       officer: 'Classification Officer',
       paras: [
-        { t: 'Your Work has been classified as Personal Activity. Personal Activity is valued by the Office. It may not be cited as experience, submitted for review, entered in your Record as Practice, or used as Evidence of Prior Practice.' }
+        { t: 'Your Work has been classified as Personal Activity. Personal Activity is valued by the Office.' },
+        { t: 'It may not be cited as experience, submitted for review, entered in your Record as Practice, or used as Evidence of Prior Practice.', q: true }
       ]
     },
     {
       day: 90,
       document: 'Adjustment of Standing',
-      status: 'Deemed preparatory',
+      status: 'Recognised Practice: 0 years',
       qualifies: true,
       title: 'Adjustment of Standing (9.3)',
       officer: 'Deputy Registrar of Standing',
       paras: [
-        { t: 'Recognised Practice is counted from the date of your first Permit. Work undertaken before that date is deemed preparatory.' },
-        { t: 'Your Recognised Practice: 0 years.', red: true }
+        { t: 'Recognised Practice is counted from the date of your first Permit. Work undertaken before that date is deemed preparatory.' }
       ]
     },
     {
       day: 90,
       document: 'Offer of Regularisation',
-      status: 'Available on evidence',
+      status: 'Regularisation available on evidence',
       qualifies: true,
       title: 'Offer of Regularisation (9.6)',
       officer: 'Clerk of Regularisation',
       paras: [
-        { t: 'You may apply for Retrospective Regularisation. Applications must include evidence that a Permit was held at the time of making.' }
+        { t: 'You may apply for Retrospective Regularisation.' },
+        { t: 'Applications must include evidence that a Permit was held at the time of making.', q: true }
       ]
     },
     {
       day: 400,
       document: 'Notice of Recognition',
-      status: 'Assistance',
+      status: 'Credited to Wren & Calloway',
       qualifies: true,
       title: 'Notice of Recognition (9.4)',
       officer: 'Registrar of Attribution',
       paras: [
         { t: 'We are pleased to inform you that your Work has been recognised.' },
         { t: 'Having considered the Influences evident in the Work (1.14), the Office has determined that it constitutes a Continuation of the Practice of Wren & Calloway, Member Practice No. 0031. Attribution has been entered in the Record accordingly.' },
-        { t: 'Your contribution has been recorded as Assistance.', red: true }
+        { t: 'Your contribution has been recorded as Assistance.', q: true }
       ]
     }
   ];
 
   function initUnregistered() {
     var form = document.getElementById('um1');
-    var disclosureSection = document.getElementById('disclosure');
+    var disclosure = document.getElementById('disclosure');
     var correspondence = document.getElementById('correspondence');
     var letters = document.getElementById('letters');
     var end = document.getElementById('um-end');
@@ -805,11 +922,20 @@
 
     function show(i, arriving) {
       var spec = UM_LETTERS[i];
-      var item = el('div', 'corr-item' + (arriving ? ' arrive' : ''));
+      var entry = entryFor(i);
+      var item = el('div', 'cmp corr-item' + (arriving ? ' arrive' : ''));
       item.tabIndex = -1;
       item.setAttribute('aria-label', 'Day ' + spec.day + ': ' + spec.document);
-      item.appendChild(el('p', 'corr-day ref', 'Day ' + spec.day));
-      item.appendChild(renderLetter(entryFor(i)));
+
+      var rail = el('div', 'corr-rail');
+      rail.appendChild(el('p', 'mono-l', 'Day ' + String(spec.day).padStart(3, '0')));
+      rail.appendChild(el('p', 'mono-s', entry.ref));
+      rail.appendChild(el('p', 'mono-s', formatDate(entry.date, spec.day)));
+      item.appendChild(rail);
+
+      var main = el('div', 'corr-main');
+      main.appendChild(renderLetter(entry));
+      item.appendChild(main);
       letters.appendChild(item);
 
       if (state.disclosure.shown < i + 1) {
@@ -817,17 +943,17 @@
         save(state);
       }
 
-      var old = letters.querySelector('.corr-next');
+      var old = letters.parentNode.querySelector('.corr-next');
       if (old) old.remove();
       if (i < UM_LETTERS.length - 1) {
-        var next = el('button', 'link corr-next no-print');
+        var next = el('button', 'btn corr-next no-print');
         next.type = 'button';
         next.appendChild(document.createTextNode('Next correspondence '));
         var arrow = el('span', null, '↓');
         arrow.setAttribute('aria-hidden', 'true');
         next.appendChild(arrow);
         next.addEventListener('click', function () { show(i + 1, true); });
-        letters.appendChild(next);
+        letters.parentNode.insertBefore(next, end);
       } else {
         end.hidden = false;
       }
@@ -839,15 +965,15 @@
     }
 
     function open() {
-      disclosureSection.hidden = true;
+      disclosure.hidden = true;
       correspondence.hidden = false;
     }
 
     // Resume a disclosure already in progress.
     if (state.disclosure) {
       open();
-      for (var i = 0; i < state.disclosure.shown; i++) show(i, false);
-      if (!state.disclosure.shown) show(0, false);
+      var shown = Math.max(1, state.disclosure.shown || 0);
+      for (var i = 0; i < shown; i++) show(i, false);
       return;
     }
 
@@ -878,9 +1004,7 @@
 
   function initRecord() {
     document.getElementById('standing-statement').textContent =
-      state.standing === 'recognised'
-        ? 'Recognised (declared; assumed).'
-        : 'Applicant (verified by calibration).';
+      isRecognised() ? 'Recognised (declared; assumed)' : 'Applicant (verified by calibration)';
 
     var entries = (state.record || []).map(function (e, i) { return { e: e, i: i }; });
     entries.sort(function (a, b) {
@@ -899,23 +1023,23 @@
       var id = 'record-letter-' + n;
 
       var row = el('tr', 'record-row');
-      var refCell = el('td', 'ref', entry.ref);
+      var refCell = el('td', 'nowrap', entry.ref);
       refCell.setAttribute('data-label', 'Ref.');
-      var dateCell = el('td', 'ref', formatDate(entry.date, (entry.letter && entry.letter.day) || 0));
+      var dateCell = el('td', 'nowrap', formatDate(entry.date, (entry.letter && entry.letter.day) || 0));
       dateCell.setAttribute('data-label', 'Date');
 
-      var docCell = el('td', 'ui');
+      var docCell = el('td');
       var toggle = el('button', 'record-open');
       toggle.type = 'button';
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-controls', id);
       toggle.appendChild(document.createTextNode(entry.document + ' '));
-      var arrow = el('span', 'record-open__arrow', '↓');
+      var arrow = el('span', null, '↓');
       arrow.setAttribute('aria-hidden', 'true');
       toggle.appendChild(arrow);
       docCell.appendChild(toggle);
 
-      var statusCell = el('td', 'ui' + (entry.qualifies ? ' red' : ''), entry.status);
+      var statusCell = el('td', 'status' + (entry.qualifies ? ' is-qual' : ''), entry.status);
       statusCell.setAttribute('data-label', 'Status');
 
       [refCell, dateCell, docCell, statusCell].forEach(function (c) { row.appendChild(c); });
@@ -927,7 +1051,7 @@
       cell.colSpan = 4;
       var wrap = el('div', 'record-letter__inner');
       wrap.appendChild(renderLetter(entry));
-      var print = el('button', 'link no-print record-print', 'Print this letter');
+      var print = el('button', 'ctl no-print record-print', 'Print this letter');
       print.type = 'button';
       print.addEventListener('click', function () { printOne(expansion); });
       wrap.appendChild(print);
@@ -962,7 +1086,7 @@
      Form O-1
      ---------------------------------------------------------------- */
 
-  var OBSERVATION_RECEIPT = 'Thank you. Your observation concerns the Standard rather than your Determination. It has been filed with the Standard (7.3) and will be considered at the next Revision. Revisions are not scheduled. Your Determination is unaffected (7.4).';
+  var OBSERVATION_RECEIPT = 'Your observation concerns the Standard rather than your Determination. It has been filed with the Standard (7.3) and will be considered at the next Revision. Revisions are not scheduled. Your Determination is unaffected (7.4).';
 
   function initObservation() {
     var form = document.getElementById('o1');
@@ -982,11 +1106,10 @@
         submitted: { observation: text },
         letter: {
           re: 'Re: Observation on the Standard (Form O-1).',
-          title: 'Observation: ',
-          titleRed: 'filed with the Standard.',
+          title: 'Observation on the Standard',
           quoteLabel: 'Observation as lodged',
           quote: text,
-          paras: [{ t: OBSERVATION_RECEIPT }],
+          paras: [{ t: 'Thank you. ' + OBSERVATION_RECEIPT }],
           officer: 'Registrar of Observations'
         }
       });

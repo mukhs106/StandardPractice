@@ -3,40 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Standard Practice</title>
+  <title>Standard Practice — Office for Exceptions</title>
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
 <body>
-  <main class="gate">
-    <div class="gate__block">
-      <h1 class="gate__title">Standard Practice</h1>
-      <p>Verifying your standing before you continue.</p>
-      <p id="gate-status" aria-live="polite">This may take a few seconds.</p>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="masthead">
+    <div class="utility">
+      <div class="frame utility__row mono-s">
+        <span>Standard Practice — Office for Exceptions</span>
+        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span data-today></span>
+      </div>
+    </div>
+  </header>
 
-      <form id="verify" novalidate>
-        <div class="gate__widget" id="widget" aria-live="polite">
-          <label class="check">
-            <input type="checkbox" id="declared" name="declared">
-            <span>I am a recognised practitioner</span>
-          </label>
-          <button class="btn" type="submit">Continue</button>
+  <main id="main" class="gate">
+    <div class="frame">
+      <div class="gate-mast">
+        <p class="mast__name">Standard Practice</p>
+        <p class="mono-l"><span class="rev">Office for Exceptions</span></p>
+      </div>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <div class="cmp gate-panel">
+        <div class="gate-rail mono-s">
+          <span>Standing verification</span>
+          <span>Ref. SV-03</span>
+          <span>Practice Charter Rev. 03</span>
+          <span data-today></span>
         </div>
-      </form>
 
-      <a class="link gate__applicant" id="as-applicant" href="#calibration">Continue as an Applicant <span aria-hidden="true">↗</span></a>
+        <div class="gate-main">
+          <h1 class="statement">Recognition precedes permission.</h1>
+          <p class="mono" id="gate-status" aria-live="polite">Verifying your standing before you continue.</p>
 
-      <form class="calibration" id="calibration" hidden novalidate>
-        <h2 class="calibration__head ui" tabindex="-1">
-          Select all examples of
-          <span class="display-s">good design.</span>
-        </h2>
+          <form id="verify" novalidate>
+            <div class="gate-widget">
+              <label class="check">
+                <input class="box" type="checkbox" id="declared" name="declared" aria-describedby="declared-qual">
+                <span>I am a recognised practitioner</span>
+              </label>
+              <button class="btn" type="submit">Continue</button>
+            </div>
+            <p class="qual" id="declared-qual">Declared standing is not reviewed unless contested.</p>
+          </form>
 
-        <div class="calibration__grid" id="calibration-form-grid">
+          <a class="link" id="as-applicant" href="#calibration">Continue as an Applicant <span aria-hidden="true">↗</span></a>
+
+          <div class="gate-receipt" id="assumed" tabindex="-1" hidden>
+            <p class="mono-l"><span class="rev">Standing assumed.</span></p>
+            <p class="copy">Evidence was not requested.</p>
+            <a class="btn" href="home.html">Enter the Office <span aria-hidden="true">→</span></a>
+          </div>
+
+          <form class="calibration" id="calibration" hidden novalidate>
+            <h2 class="calibration__head mono" tabindex="-1">
+              Select all examples of
+              <span class="statement">good design.</span>
+            </h2>
+
+            <div class="calibration__grid">
           <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 1">
             <span class="specimen">
               <svg viewBox="0 0 120 120" aria-hidden="true">
@@ -88,20 +121,14 @@
           <button class="tile" type="button" aria-pressed="false" aria-label="Specimen 4">
             <span class="specimen">
               <svg viewBox="0 0 120 120" aria-hidden="true">
-                <defs>
-                  <linearGradient id="specimen-gradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#7b5cff"/>
-                    <stop offset="1" stop-color="#25c4f0"/>
-                  </linearGradient>
-                </defs>
-                <rect width="120" height="120" fill="url(#specimen-gradient)"/>
+                <rect width="120" height="120" fill="#0000ff"/>
                 <g font-family="Inter, sans-serif" fill="#fff">
                   <text x="14" y="50" font-size="11" font-weight="500">Build without</text>
                   <text x="14" y="63" font-size="11" font-weight="500">limits.</text>
                   <text x="14" y="75" font-size="5.2">Everything you need, in one place.</text>
                 </g>
                 <rect x="14" y="84" width="42" height="13" fill="#fff"/>
-                <text x="35" y="92.6" text-anchor="middle" font-family="Inter, sans-serif" font-size="5.2" font-weight="500" fill="#5b4bdb">Get started</text>
+                <text x="35" y="92.6" text-anchor="middle" font-family="Inter, sans-serif" font-size="5.2" font-weight="500" fill="#0000ff">Get started</text>
               </svg>
             </span>
             <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
@@ -124,7 +151,7 @@
                   <line x1="70" y1="0" x2="70" y2="120"/>
                   <line x1="0" y1="96" x2="120" y2="96"/>
                 </g>
-                <rect x="10" y="14" width="60" height="7" fill="#b22222"/>
+                <rect x="10" y="14" width="60" height="7" fill="#0000ff"/>
                 <g font-family="Inter, sans-serif" font-weight="500" font-size="14" letter-spacing="-.5">
                   <text x="11" y="42">Form</text>
                   <text x="11" y="56">follows</text>
@@ -209,28 +236,22 @@
             <span class="tile__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#fff" stroke-width="2"/></svg></span>
           </button>
         </div>
+            <div class="calibration__foot">
+              <button class="btn" type="submit">Submit</button>
+            </div>
+          </form>
 
-        <div class="calibration__foot">
-          <button class="btn" type="submit">Submit</button>
+          <div class="gate-receipt" id="receipt" tabindex="-1" hidden>
+            <p class="mono-l"><span class="rev">Calibration recorded.</span></p>
+            <p class="copy">Thank you. Your selections have been recorded and will inform the Standard.</p>
+            <a class="btn" href="home.html">Enter the Office <span aria-hidden="true">→</span></a>
+          </div>
         </div>
-      </form>
-
-      <p class="gate__receipt" id="receipt" tabindex="-1" hidden>Thank you. Your selections have been recorded and will inform the Standard.</p>
-
-      <p class="gate__note"><em>Most work begins with permission. Permission begins with a record of work. Before you continue, confirm whether you already have one.</em></p>
-
-      <p class="gate__fine ref">Standing verification by Standard Practice · Ref. SV-03 · Declared standing is not reviewed unless contested.</p>
+      </div>
+    </div>
+    <div class="gate-after">
+    <div class="repeat" aria-hidden="true">RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; </div>
     </div>
   </main>
-
-  <template id="spinner-template">
-    <div class="gate__verifying">
-      <svg class="spinner" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="#000" stroke-width="1"/>
-        <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="#000" stroke-width="3"/>
-      </svg>
-      <span>Verifying</span>
-    </div>
-  </template>
 </body>
 </html>

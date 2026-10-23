@@ -3,26 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Apply to make — Standard Practice</title>
+  <title>Form P-1 — Standard Practice</title>
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-
-  <header class="site-header">
-    <div class="frame">
-      <a class="wordmark" href="home.html"><span>Standard Practice</span><span>Office for Exceptions</span></a>
-      <nav class="site-nav" aria-label="Office">
-        <p>Viewing as: <span data-standing-label>Applicant</span></p>
+  <header class="masthead">
+    <div class="utility">
+      <div class="frame utility__row mono-s">
+        <span>Standard Practice — Office for Exceptions</span>
+        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span data-today></span>
+      </div>
+    </div>
+    <div class="frame mast">
+      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub rev">Office for Exceptions</span></a>
+      <nav class="mast__nav" aria-label="Office">
+        <p class="mast__standing">Viewing as <span class="rev" data-standing-label>Applicant</span></p>
         <ul>
           <li><a href="charter.html">The Charter</a></li>
           <li><a href="record.html">Your Record</a></li>
-          <li><a href="apply.html" aria-current="page">Apply to make <span aria-hidden="true">↗</span></a></li>
+          <li><a href="apply.html" aria-current="page">Apply <span aria-hidden="true">↗</span></a></li>
         </ul>
       </nav>
     </div>
@@ -30,183 +36,273 @@
 
   <main id="main">
     <section class="page-head frame">
-      <p class="ref" id="step-indicator" aria-live="polite">Form P-1 · Step 1 of 3</p>
-      <h1 class="display-l">Apply to make.</h1>
+      <p class="mono-s">Form P-1 · Application for a Permit to Make</p>
+      <h1 class="statement">Submit the dossier.</h1>
+      <p class="page-head__assert mono"><span class="rev">Submission does not establish standing.</span></p>
     </section>
 
-    <div class="band">
-      <div class="frame grid form-layout">
-        <aside class="form-aside" aria-label="Form P-1">
-          <ol class="steps">
-            <li data-step-marker="1" aria-current="step"><span class="ref">01</span> The Work</li>
-            <li data-step-marker="2"><span class="ref">02</span> Your Standing</li>
-            <li data-step-marker="3"><span class="ref">03</span> Your Sponsor</li>
-          </ol>
-          <p class="text">An application for a <a class="term" href="charter.html#c-1-7">Permit</a> must be made in the prescribed form (Form P-1) and must describe the Work, its defined outcome, the <a class="term" href="charter.html#c-1-13">Applicant</a>’s Standing, and their <a class="term" href="charter.html#c-1-11">Sponsor</a> (<a class="xref" href="charter.html#c-5-1">5.1</a>).</p>
+    <div class="frame">
+      <div class="cmp dossier">
+        <aside class="rail" aria-label="Application status">
+          <div class="rail__inner">
+          <div class="rail__block">
+            <p class="mono-s">Requirements</p>
+            <ol class="rail-list" style="margin-top: 8px">
+              <li><a href="#sec-1">01 Proposed work</a><span class="state state--outstanding" data-sec-state="1">Outstanding</span></li>
+              <li><a href="#sec-2">02 Prior practice</a><span class="state state--outstanding" data-sec-state="2">Outstanding</span></li>
+              <li><a href="#sec-3">03 Evidence of standing</a><span class="state state--outstanding" data-sec-state="3">Outstanding</span></li>
+              <li><a href="#sec-4">04 Sponsorship</a><span class="state state--outstanding" data-sec-state="4">Outstanding</span></li>
+              <li><a href="#sec-5">05 Declaration</a><span class="state state--outstanding" data-sec-state="5">Outstanding</span></li>
+            </ol>
+          </div>
+          <div class="rail__block" aria-live="polite">
+            <p class="mono-s">Submission</p>
+            <p class="rail-status" id="st-submission">Incomplete</p>
+          </div>
+          <div class="rail__block">
+            <p class="mono-s">Recognition</p>
+            <p class="rail-status"><span class="rev" data-fact="recognition">Not assessed</span></p>
+            <p class="qual" data-view="applicant">Permits held in the Record: <span data-fact="permits">0</span>. <a class="term" href="charter.html#c-1-6">Evidence of Prior Practice</a> means Work made under a Permit.</p>
+            <p class="qual" data-view="recognised">Standing assumed at verification.</p>
+          </div>
+          <div class="rail__block">
+            <p class="mono-s">Public record</p>
+            <p class="rail-status" data-fact="publicRecord">Withheld</p>
+            <p class="qual">Visibility follows recognition.</p>
+          </div>
+          <div class="rail__block rail__submit">
+            <button class="btn" type="submit" form="p1">Submit dossier <span aria-hidden="true">→</span></button>
+          </div>
+          </div>
         </aside>
 
-        <form class="form-main" id="p1" novalidate>
+        <form class="dossier-main" id="p1" novalidate>
 
-          <!-- Step 1 — The Work -->
-          <fieldset class="form-step" data-step="1" aria-labelledby="step-1-title">
-            <h2 class="display-s" id="step-1-title" tabindex="-1">The Work</h2>
-
-            <div class="field">
-              <label for="title">Title of proposed Work</label>
-              <input class="input" id="title" name="title" type="text" autocomplete="off">
+          <section class="dossier-sec" id="sec-1" aria-labelledby="sec-1-title">
+            <div class="dossier-sec__head">
+              <span class="dossier-sec__num rev">01</span>
+              <h2 id="sec-1-title" tabindex="-1">Proposed work and outcome</h2>
+              <span class="state state--outstanding" data-sec-state="1">Outstanding</span>
             </div>
-
-            <div class="field">
-              <label for="description">Describe what you intend to make</label>
-              <textarea class="input" id="description" name="description" rows="4"></textarea>
-            </div>
-
-            <fieldset class="field">
-              <legend class="field__label">Outcome</legend>
-              <div class="choices">
-                <label class="choice"><input class="box" type="radio" name="outcome" value="defined"><span>A defined outcome</span></label>
-                <label class="choice"><input class="box" type="radio" name="outcome" value="undetermined"><span>An outcome to be determined during making</span></label>
+            <div class="dossier-sec__body">
+              <div class="field wide">
+                <label class="label" for="title">Title of proposed Work</label>
+                <input class="input" id="title" name="title" type="text" autocomplete="off">
               </div>
-              <p class="note text red" id="note-outcome" hidden>Work without a defined outcome is classified as <a class="term" href="charter.html#c-1-12">Personal Activity</a> (<a class="xref" href="charter.html#c-3-4">3.4</a>). You may continue.</p>
-            </fieldset>
-
-            <div class="form-actions">
-              <button class="btn" type="button" data-next>Continue</button>
-            </div>
-          </fieldset>
-
-          <!-- Step 2 — Your Standing -->
-          <fieldset class="form-step" data-step="2" aria-labelledby="step-2-title" hidden>
-            <h2 class="display-s" id="step-2-title" tabindex="-1">Your Standing</h2>
-
-            <fieldset class="field">
-              <legend class="field__label">Grounds for Standing (Schedule A)</legend>
-              <div class="grounds">
-                <div class="ground">
-                  <label class="choice">
-                    <input class="box" type="checkbox" name="ground" value="A1">
-                    <span class="ground__name"><span class="ref">A1</span> Impact</span>
-                  </label>
-                  <div class="ground__body">
-                    <p class="text">Work that demonstrably changed an outcome for a client or institution</p>
-                    <p class="ref">Verified by: The client</p>
-                    <div class="field" id="evidence-A1" hidden>
-                      <label for="evidence-A1-input">Evidence</label>
-                      <input class="input" id="evidence-A1-input" type="text" autocomplete="off">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="ground">
-                  <label class="choice">
-                    <input class="box" type="checkbox" name="ground" value="A2">
-                    <span class="ground__name"><span class="ref">A2</span> Endorsement</span>
-                  </label>
-                  <div class="ground__body">
-                    <p class="text">Selection, publication, or membership by a body of Standing</p>
-                    <p class="ref">Verified by: The body</p>
-                    <div class="field" id="evidence-A2" hidden>
-                      <label for="evidence-A2-input">Evidence</label>
-                      <input class="input" id="evidence-A2-input" type="text" autocomplete="off">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="ground">
-                  <label class="choice">
-                    <input class="box" type="checkbox" name="ground" value="A3">
-                    <span class="ground__name"><span class="ref">A3</span> Pedigree</span>
-                  </label>
-                  <div class="ground__body">
-                    <p class="text">Education, employment or commission from institutions of Standing</p>
-                    <p class="ref">Verified by: The institution</p>
-                    <div class="field" id="evidence-A3" hidden>
-                      <label for="evidence-A3-input">Evidence</label>
-                      <input class="input" id="evidence-A3-input" type="text" autocomplete="off">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="ground">
-                  <label class="choice">
-                    <input class="box" type="checkbox" name="ground" value="A4">
-                    <span class="ground__name"><span class="ref">A4</span> Craft</span>
-                  </label>
-                  <div class="ground__body">
-                    <p class="text">Command of the formal rules of the medium</p>
-                    <p class="ref">Verified by: — (see <a class="xref" href="charter.html#c-4-3">4.3</a>)</p>
-                    <p class="note text red">Craft alone shall not constitute Standing (<a class="xref" href="charter.html#c-4-3">4.3</a>).</p>
-                    <div class="field" id="evidence-A4" hidden>
-                      <label for="evidence-A4-input">Evidence</label>
-                      <input class="input" id="evidence-A4-input" type="text" autocomplete="off">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="ground">
-                  <label class="choice">
-                    <input class="box" type="checkbox" name="ground" value="A5">
-                    <span class="ground__name"><span class="ref">A5</span> Contribution</span>
-                  </label>
-                  <div class="ground__body">
-                    <p class="text">Teaching, speaking, publishing or mentoring</p>
-                    <p class="ref">Verified by: The audience</p>
-                    <div class="field" id="evidence-A5" hidden>
-                      <label for="evidence-A5-input">Evidence</label>
-                      <input class="input" id="evidence-A5-input" type="text" autocomplete="off">
-                    </div>
-                  </div>
-                </div>
+              <div class="field wide" data-view="applicant">
+                <label class="label" for="description">Describe what you intend to make</label>
+                <textarea class="input" id="description" name="description" rows="3"></textarea>
               </div>
-            </fieldset>
-
-            <div class="field">
-              <label for="years">Years of Recognised Practice</label>
-              <input class="input" id="years" name="years" type="number" min="0" step="1" inputmode="numeric" aria-describedby="note-years">
-              <p class="note text red" id="note-years"><a class="term" href="charter.html#c-1-10">Recognised Practice</a> is counted from the date of your first <a class="term" href="charter.html#c-1-7">Permit</a> (<a class="xref" href="charter.html#c-1-10">1.10</a>).</p>
+              <fieldset class="field wide" data-view="applicant">
+                <legend class="label">Outcome</legend>
+                <div class="choices">
+                  <label class="choice"><input class="box" type="radio" name="outcome" value="defined"><span>A defined outcome</span></label>
+                  <label class="choice"><input class="box" type="radio" name="outcome" value="undetermined"><span>An outcome to be determined during making</span></label>
+                </div>
+                <p class="qual" id="qual-outcome" hidden>Work without a defined outcome is classified as <a class="term" href="charter.html#c-1-12">Personal Activity</a> (<a class="xref" href="charter.html#c-3-4">3.4</a>). You may continue.</p>
+              </fieldset>
+              <p class="qual wide" data-view="recognised">Your Work without a defined outcome would be classified as research (<a class="xref" href="charter.html#c-3-4">3.4</a>). The field is not required.</p>
             </div>
+          </section>
 
-            <div class="form-actions">
-              <button class="btn" type="button" data-next>Continue</button>
-              <button class="link" type="button" data-back>Back</button>
+          <section class="dossier-sec" id="sec-2" aria-labelledby="sec-2-title">
+            <div class="dossier-sec__head">
+              <span class="dossier-sec__num rev">02</span>
+              <h2 id="sec-2-title" tabindex="-1">Prior practice</h2>
+              <span class="state state--outstanding" data-sec-state="2">Outstanding</span>
             </div>
-          </fieldset>
-
-          <!-- Step 3 — Your Sponsor -->
-          <fieldset class="form-step" data-step="3" aria-labelledby="step-3-title" hidden>
-            <h2 class="display-s" id="step-3-title" tabindex="-1">Your Sponsor</h2>
-
-            <div class="field">
-              <label for="sponsor">Name of Sponsor</label>
-              <input class="input" id="sponsor" name="sponsor" type="text" autocomplete="off">
+            <p class="dossier-sec__waived" data-view="recognised">Waived. Not required of a Practitioner of Standing (3.2).</p>
+            <div class="dossier-sec__body" data-view="applicant">
+              <div class="field">
+                <p class="label" id="permits-label">Permits held in the Record</p>
+                <p class="readout" aria-labelledby="permits-label"><span data-fact="permits">0</span><span class="mono-s">Retrieved from the Record</span></p>
+                <p class="qual">Evidence of Prior Practice means Work made under a Permit (<a class="xref" href="charter.html#c-1-6">1.6</a>).</p>
+              </div>
+              <div class="field">
+                <label class="label" for="years">Years of Recognised Practice</label>
+                <input class="input" id="years" name="years" type="number" min="0" step="1" inputmode="numeric" aria-describedby="qual-years">
+                <p class="qual" id="qual-years">Counted from the date of your first Permit (<a class="xref" href="charter.html#c-1-10">1.10</a>).</p>
+              </div>
+              <div class="field wide">
+                <label class="label" for="prior">Work made before this application</label>
+                <textarea class="input" id="prior" name="prior" rows="3" aria-describedby="qual-prior"></textarea>
+                <p class="qual" id="qual-prior">Work made without a Permit is admissible as Personal Activity only (<a class="xref" href="charter.html#c-6-2">6.2</a>).</p>
+              </div>
             </div>
+          </section>
 
-            <label class="choice choice--single"><input class="box" type="checkbox" id="no-sponsor"><span>I do not have a Sponsor</span></label>
-            <p class="note text red" id="note-sponsor" hidden>A <a class="term" href="charter.html#c-1-11">Sponsor</a> must be a <a class="term" href="charter.html#c-1-4">Practitioner of Standing</a> (<a class="xref" href="charter.html#c-1-11">1.11</a>). Applications without a Sponsor are received (<a class="xref" href="charter.html#c-5-5">5.5</a>).</p>
-
-            <label class="choice choice--single"><input class="box" type="checkbox" id="declaration" required aria-describedby="declaration-error"><span>I confirm that I have not begun.</span></label>
-            <p class="form-error" id="declaration-error" hidden>The declaration must be confirmed before your application can be received.</p>
-
-            <div class="form-actions">
-              <button class="btn" type="submit">Submit application</button>
-              <button class="link" type="button" data-back>Back</button>
+          <section class="dossier-sec" id="sec-3" aria-labelledby="sec-3-title">
+            <div class="dossier-sec__head">
+              <span class="dossier-sec__num rev">03</span>
+              <h2 id="sec-3-title" tabindex="-1">Evidence of standing</h2>
+              <span class="state state--outstanding" data-sec-state="3">Outstanding</span>
             </div>
-          </fieldset>
+            <p class="dossier-sec__waived" data-view="recognised">Waived. Not required of a Practitioner of Standing (3.2).</p>
+            <div class="dossier-sec__body" data-view="applicant">
+              <fieldset class="field wide">
+                <legend class="label">Grounds for Standing · Schedule A · <span id="grounds-count">0 of 3 selected</span></legend>
+                <p class="qual" style="margin: 0 0 8px">An Applicant must satisfy no fewer than three Grounds (<a class="xref" href="charter.html#c-4-2">4.2</a>).</p>
+                <div class="grounds">
+                  <div class="ground">
+                    <label class="ground__row">
+                      <input class="box" type="checkbox" name="ground" value="A1">
+                      <span class="ground__code">A1</span>
+                      <span class="ground__name">Impact<span>Work that demonstrably changed an outcome for a client or institution</span></span>
+                      <span class="ground__by">Verified by: The client</span>
+                    </label>
+                    <div class="ground__fields" id="evidence-A1" hidden>
+                      <div class="field">
+                        <label class="label" for="ev-A1-outcome-changed">Outcome changed</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A1-outcome-changed" name="outcome-changed">
+                      </div>
+                      <div class="field">
+                        <label class="label" for="ev-A1-client">Client who will verify</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A1-client" name="client">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ground">
+                    <label class="ground__row">
+                      <input class="box" type="checkbox" name="ground" value="A2">
+                      <span class="ground__code">A2</span>
+                      <span class="ground__name">Endorsement<span>Selection, publication, or membership by a body of Standing</span></span>
+                      <span class="ground__by">Verified by: The body</span>
+                    </label>
+                    <div class="ground__fields" id="evidence-A2" hidden>
+                      <div class="field">
+                        <label class="label" for="ev-A2-body">Body, publication or platform</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A2-body" name="body">
+                      </div>
+                      <div class="field">
+                        <label class="label" for="ev-A2-selection">What was selected or published</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A2-selection" name="selection">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ground">
+                    <label class="ground__row">
+                      <input class="box" type="checkbox" name="ground" value="A3">
+                      <span class="ground__code">A3</span>
+                      <span class="ground__name">Pedigree<span>Education, employment or commission from institutions of Standing</span></span>
+                      <span class="ground__by">Verified by: The institution</span>
+                    </label>
+                    <div class="ground__fields" id="evidence-A3" hidden>
+                      <div class="field">
+                        <label class="label" for="ev-A3-institution">Institution of Standing</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A3-institution" name="institution">
+                      </div>
+                      <div class="field">
+                        <label class="label" for="ev-A3-relation">Education, employment or commission</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A3-relation" name="relation">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ground">
+                    <label class="ground__row">
+                      <input class="box" type="checkbox" name="ground" value="A4">
+                      <span class="ground__code">A4</span>
+                      <span class="ground__name">Craft<span>Command of the formal rules of the medium</span></span>
+                      <span class="ground__by">Verified by: —</span>
+                    </label>
+                    <div class="ground__fields" id="evidence-A4" hidden>
+                      <p class="qual wide">Craft alone shall not constitute Standing (<a class="xref" href="charter.html#c-4-3">4.3</a>).</p>
+                      <div class="field wide">
+                        <label class="label" for="ev-A4-command">Describe your command of the medium</label>
+                        <textarea class="input" rows="3" id="ev-A4-command" name="command"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ground">
+                    <label class="ground__row">
+                      <input class="box" type="checkbox" name="ground" value="A5">
+                      <span class="ground__code">A5</span>
+                      <span class="ground__name">Contribution<span>Teaching, speaking, publishing or mentoring</span></span>
+                      <span class="ground__by">Verified by: The audience</span>
+                    </label>
+                    <div class="ground__fields" id="evidence-A5" hidden>
+                      <div class="field">
+                        <label class="label" for="ev-A5-contribution">Teaching, speaking, publishing or mentoring</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A5-contribution" name="contribution">
+                      </div>
+                      <div class="field">
+                        <label class="label" for="ev-A5-audience">Audience</label>
+                        <input class="input" type="text" autocomplete="off" id="ev-A5-audience" name="audience">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="dossier-sec" id="sec-4" aria-labelledby="sec-4-title">
+            <div class="dossier-sec__head">
+              <span class="dossier-sec__num rev">04</span>
+              <h2 id="sec-4-title" tabindex="-1">Sponsorship</h2>
+              <span class="state state--outstanding" data-sec-state="4">Outstanding</span>
+            </div>
+            <p class="dossier-sec__waived" data-view="recognised">Waived. Not required of a Practitioner of Standing (3.2).</p>
+            <div class="dossier-sec__body" data-view="applicant">
+              <div class="field">
+                <label class="label" for="sponsor">Name of Sponsor</label>
+                <input class="input" id="sponsor" name="sponsor" type="text" autocomplete="off">
+              </div>
+              <div class="field">
+                <label class="label" for="sponsorNo">Sponsor’s Member Practice No.</label>
+                <input class="input" id="sponsorNo" name="sponsorNo" type="text" autocomplete="off">
+              </div>
+              <p class="qual wide" style="margin-top: 0">A <a class="term" href="charter.html#c-1-11">Sponsor</a> must be a <a class="term" href="charter.html#c-1-4">Practitioner of Standing</a> (<a class="xref" href="charter.html#c-1-11">1.11</a>).</p>
+              <div class="wide">
+                <div class="choices">
+                  <label class="choice"><input class="box" type="checkbox" id="no-sponsor" name="noSponsor"><span>I do not have a Sponsor</span></label>
+                </div>
+                <p class="qual" id="qual-sponsor" hidden>Applications without a Sponsor are received (<a class="xref" href="charter.html#c-5-5">5.5</a>).</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="dossier-sec" id="sec-5" aria-labelledby="sec-5-title">
+            <div class="dossier-sec__head">
+              <span class="dossier-sec__num rev">05</span>
+              <h2 id="sec-5-title" tabindex="-1">Declaration</h2>
+              <span class="state state--outstanding" data-sec-state="5">Outstanding</span>
+            </div>
+            <p class="dossier-sec__waived" data-view="recognised">Waived. Not required of a Practitioner of Standing (3.2).</p>
+            <div class="dossier-sec__body" data-view="applicant">
+              <div class="choices wide">
+                <label class="choice"><input class="box" type="checkbox" name="notBegun"><span>I confirm that I have not begun.</span></label>
+                <label class="choice"><input class="box" type="checkbox" name="noStanding"><span>I understand that submission does not establish standing.</span></label>
+              </div>
+            </div>
+          </section>
+
+          <div class="dossier-foot">
+            <button class="btn" type="submit">Submit dossier <span aria-hidden="true">→</span></button>
+            <p class="form-error" id="submit-message" role="status"></p>
+          </div>
         </form>
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
-    <div class="frame grid">
-      <p class="footer-id">Standard Practice — Office for Exceptions. Established 1852.<br>Practice Charter, Revision 03.</p>
-      <p class="footer-motto">Standards in force. Exceptions by determination.</p>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="charter.html">The Charter</a>
-        <a href="record.html">Your Record</a>
-        <a href="observation.html">Lodge an observation</a>
-        <a href="index.html" data-reverify>Re-verify standing</a>
-      </nav>
+    <div class="frame">
+      <div class="cmp footer-cmp">
+        <div>
+          <p class="mono">Standard Practice — Office for Exceptions</p>
+          <p class="mono-s">Established 1852. Practice Charter, Revision 03.</p>
+        </div>
+        <div>
+          <p class="mono">Standards in force. Exceptions by determination.</p>
+        </div>
+        <nav class="footer-links mono" aria-label="Footer">
+          <a href="charter.html">The Charter</a>
+          <a href="record.html">Your Record</a>
+          <a href="observation.html">Lodge an observation</a>
+          <a href="index.html" data-reverify>Re-verify standing</a>
+        </nav>
+      </div>
+      <p class="spread" aria-hidden="true">O F F I C E &nbsp; F O R &nbsp; E X C E P T I O N S</p>
     </div>
   </footer>
 </body>
