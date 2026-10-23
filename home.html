@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
@@ -16,15 +16,14 @@
   <header class="masthead">
     <div class="utility">
       <div class="frame utility__row mono-s">
-        <span>Standard Practice — Office for Exceptions</span>
-        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span><span class="utility__est">Est. 1852 · </span>Practice Charter Rev. 03</span>
         <span data-today></span>
       </div>
     </div>
     <div class="frame mast">
-      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub rev">Office for Exceptions</span></a>
+      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub">Office for Exceptions</span></a>
       <nav class="mast__nav" aria-label="Office">
-        <p class="mast__standing">Viewing as <span class="rev" data-standing-label>Applicant</span></p>
+        <p class="mast__standing">Viewing as <strong data-standing-label>Applicant</strong></p>
         <ul>
           <li><a href="charter.html">The Charter</a></li>
           <li><a href="record.html">Your Record</a></li>
@@ -36,38 +35,33 @@
 
   <main id="main">
     <section class="hero frame" aria-labelledby="declaration">
-      <p class="mono-l hero__welcome"><span class="rev">Welcome to the Office for Exceptions.</span></p>
+      <p class="mono-l hero__welcome">Welcome to the Office for Exceptions.</p>
       <h1 class="monument" id="declaration"><span class="monument__line">Everyone can make.</span> <span class="monument__line">We decide what counts.<button class="ast" type="button" aria-label="Qualification" data-q="Existing recognition may satisfy the requirement for permission. Recognition is determined by the Office.">*</button></span></h1>
       <div class="hero__foot">
         <p class="lede">Apply for permission, recognition and entry into the public record.</p>
-        <div class="hero__actions">
-          <a class="btn" href="apply.html" data-view="applicant">Apply for permission <span aria-hidden="true">→</span></a>
-          <a class="btn" href="apply.html" data-view="recognised">Confirm a Continuation of Practice <span aria-hidden="true">→</span></a>
-          <a class="link" href="unregistered.html">Proceed without permission <span aria-hidden="true">↗</span></a>
-        </div>
+        <a class="btn" href="apply.html" data-view="applicant">Apply for permission <span aria-hidden="true">→</span></a>
+        <a class="btn" href="apply.html" data-view="recognised">Confirm a Continuation of Practice <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
-    <div class="frame"><div class="sep" aria-hidden="true"></div></div>
-
     <div class="frame">
-      <div class="cmp office-grid">
-        <section class="cell-stand" aria-labelledby="stand-label">
-          <p class="mono-s cell-label" id="stand-label">YOUR STANDING</p>
-          <p class="mono-l"><span class="rev" data-standing-label>Applicant</span></p>
-          <dl class="facts">
-            <div><dt>Permits held</dt><dd data-fact="permits">0</dd></div>
-            <div><dt>Recognition</dt><dd data-fact="recognition">Not assessed</dd></div>
-            <div><dt>Public record</dt><dd data-fact="publicRecord">Withheld</dd></div>
-            <div><dt>Record entries</dt><dd data-fact="entries">0</dd></div>
-          </dl>
-          <a class="link" href="index.html" data-reverify>Re-verify standing <span aria-hidden="true">↗</span></a>
-        </section>
+      <section class="standing" aria-labelledby="stand-label">
+        <h2 class="vh" id="stand-label">Your standing</h2>
+        <dl class="standing__facts mono-s">
+          <div><dt>Your standing</dt><dd data-standing-label>Applicant</dd></div>
+          <div><dt>Permits held</dt><dd data-fact="permits">0</dd></div>
+          <div><dt>Recognition</dt><dd data-fact="recognition">Not assessed</dd></div>
+          <div><dt>Public record</dt><dd data-fact="publicRecord">Withheld</dd></div>
+          <div><dt>Record entries</dt><dd data-fact="entries">0</dd></div>
+        </dl>
+        <a class="link standing__reverify" href="index.html" data-reverify>Re-verify <span aria-hidden="true">↗</span></a>
+      </section>
 
+      <div class="cmp office-grid">
         <section class="route cell-a" aria-labelledby="route-a">
           <div class="route__head">
-            <p class="mono-s" id="route-a">ROUTE A · APPLICANTS</p>
-            <p class="mono-s" data-view="applicant"><span class="rev">YOUR ROUTE</span></p>
+            <h2 class="mono-s" id="route-a">Route A · Applicants</h2>
+            <p class="mono-s route__yours" data-view="applicant">Your route</p>
           </div>
           <p class="statement">Five sections. Three grounds. One Sponsor.</p>
           <ol class="route__list">
@@ -76,55 +70,51 @@
             <li><span>03</span><span>Evidence of standing</span><span>3 of 5</span></li>
             <li><span>04</span><span>Sponsorship</span><span>Required</span></li>
             <li><span>05</span><span>Declaration</span><span>Required</span></li>
+            <li class="route__outcome"><span></span><span>On completion</span><span class="blue">Deferred</span></li>
           </ol>
-          <p class="route__outcome mono">On completion <span class="rev">Deferred</span></p>
           <p class="qual">Every application requires Evidence of Prior Practice: Work made under a Permit (<a class="xref" href="charter.html#c-6-1">6.1</a>).</p>
-          <a class="btn" href="apply.html" data-view="applicant">Begin the dossier <span aria-hidden="true">→</span></a>
         </section>
 
         <section class="route cell-b" aria-labelledby="route-b">
           <div class="route__head">
-            <p class="mono-s" id="route-b">ROUTE B · RECOGNISED PRACTITIONERS</p>
-            <p class="mono-s" data-view="recognised"><span class="rev">YOUR ROUTE</span></p>
+            <h2 class="mono-s" id="route-b">Route B · Recognised practitioners</h2>
+            <p class="mono-s route__yours" data-view="recognised">Your route</p>
           </div>
           <p class="statement">One field.</p>
           <ol class="route__list">
             <li><span>01</span><span>Title of work</span><span>Required</span></li>
-            <li><span>02–05</span><span>Waived</span><span>(3.2)</span></li>
+            <li class="route__waived"><span>02–05</span><span>Waived</span><span>(3.2)</span></li>
+            <li class="route__outcome"><span></span><span>On completion</span><span>Not required</span></li>
           </ol>
-          <p class="route__outcome mono">On completion <span class="rev rev--ink">Not required</span></p>
           <p class="qual">New work by a Practitioner of Standing is presumed a <a class="term" href="charter.html#c-1-9">Continuation of Practice</a> (<a class="xref" href="charter.html#c-3-2">3.2</a>).</p>
-          <a class="btn" href="apply.html" data-view="recognised">Confirm a Continuation <span aria-hidden="true">→</span></a>
         </section>
+
+        <aside class="cell-notice is-blue" aria-labelledby="notice-label">
+          <p class="mono-s" id="notice-label">Notice 04 · Commencement</p>
+          <p class="mono-l">Please do not begin in order to demonstrate that you can.</p>
+          <a class="link" href="charter.html#part-6">Evidence requirements <span aria-hidden="true">↗</span></a>
+        </aside>
 
         <section class="cell-wo" aria-labelledby="wo-title">
           <div>
-            <p class="mono-s">FORM UM-1 · WITHOUT PERMISSION</p>
-            <p class="statement" id="wo-title">Make it anyway.</p>
+            <p class="mono-s">Form UM-1 · Without permission</p>
+            <h2 class="statement" id="wo-title">Make it anyway.</h2>
             <p class="copy">Disclose the work. It will be received.</p>
           </div>
           <div>
             <p class="qual">Work made without a <a class="term" href="charter.html#c-1-7">Permit</a> is classified as Personal Activity (<a class="xref" href="charter.html#c-9-2">9.2</a>). If it succeeds, credit may be reassigned (<a class="xref" href="charter.html#c-9-4">9.4</a>).</p>
-            <p style="margin-top: 16px"><a class="btn btn--blue" href="unregistered.html">Proceed without permission <span aria-hidden="true">↗</span></a></p>
+            <a class="btn" href="unregistered.html">Proceed without permission <span aria-hidden="true">↗</span></a>
           </div>
         </section>
-
-        <aside class="cell-notice is-blue" aria-labelledby="notice-label">
-          <p class="mono-s" id="notice-label">NOTICE 04 / COMMENCEMENT</p>
-          <p class="mono-l">Please do not begin in order to demonstrate that you can.</p>
-          <a class="link" href="charter.html#part-6">Evidence requirements <span aria-hidden="true">↗</span></a>
-        </aside>
       </div>
     </div>
 
-    <div style="margin-top: 40px">
-    <div class="repeat" aria-hidden="true">RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; RECOGNITION PRECEDES PERMISSION &nbsp;✱&nbsp; SUBMISSION DOES NOT ESTABLISH STANDING &nbsp;✱&nbsp; VISIBILITY FOLLOWS RECOGNITION &nbsp;✱&nbsp; EVERYONE CAN MAKE. WE DECIDE WHAT COUNTS &nbsp;✱&nbsp; </div>
-    </div>
+    <div class="repeat"><p class="repeat__track"><span>Recognition precedes permission.</span> <span class="repeat__mark" aria-hidden="true">✱</span> <span>Submission does not establish standing.</span> <span class="repeat__mark" aria-hidden="true">✱</span> <span>Visibility follows recognition.</span> <span class="repeat__mark" aria-hidden="true">✱</span> <span>Everyone can make. We decide what counts.</span> <span class="repeat__mark" aria-hidden="true">✱</span> <span aria-hidden="true"><span>Recognition precedes permission.</span> <span class="repeat__mark">✱</span> <span>Submission does not establish standing.</span> <span class="repeat__mark">✱</span> <span>Visibility follows recognition.</span> <span class="repeat__mark">✱</span> <span>Everyone can make. We decide what counts.</span> <span class="repeat__mark">✱</span> <span>Recognition precedes permission.</span> <span class="repeat__mark">✱</span> <span>Submission does not establish standing.</span> <span class="repeat__mark">✱</span> <span>Visibility follows recognition.</span> <span class="repeat__mark">✱</span> <span>Everyone can make. We decide what counts.</span> <span class="repeat__mark">✱</span> <span>Recognition precedes permission.</span> <span class="repeat__mark">✱</span> <span>Submission does not establish standing.</span> <span class="repeat__mark">✱</span> <span>Visibility follows recognition.</span> <span class="repeat__mark">✱</span> <span>Everyone can make. We decide what counts.</span> <span class="repeat__mark">✱</span></span></p></div>
 
     <div class="frame">
-      <div class="cmp permits">
-        <div>
-          <p class="mono-s">SP/OP · ENTRY</p>
+      <div class="permits">
+        <div class="permits__head">
+          <p class="mono-s">SP/OP · Entry</p>
           <h2 class="statement" id="permits-title">Permits currently open.</h2>
         </div>
         <div>
@@ -144,30 +134,30 @@
                 <td data-label="Description"><a class="term" href="charter.html#c-1-8">New Practice</a> in any discipline</td>
                 <td data-label="Requirements">
                   <span data-view="applicant">Three (3) years of <a class="term" href="charter.html#c-1-10">Recognised Practice</a>. One <a class="term" href="charter.html#c-1-11">Sponsor</a> of Standing. A body of Work made under Permit.</span>
-                  <span data-view="recognised" class="blue">Not applicable to your standing.</span>
+                  <span data-view="recognised">Not applicable to your standing.</span>
                 </td>
                 <td class="mono-s" data-label="Ref.">SP/OP/0114</td>
-                <td><a class="ctl" href="apply.html">Apply ↗</a></td>
+                <td><a class="link" href="apply.html">Apply <span aria-hidden="true">↗</span></a></td>
               </tr>
               <tr>
                 <td class="p-name">Permit to Experiment — Junior</td>
                 <td data-label="Description">Exploratory Work without a predetermined result</td>
                 <td data-label="Requirements">
                   <span data-view="applicant">A defined outcome.</span>
-                  <span data-view="recognised" class="blue">Not applicable to your standing.</span>
+                  <span data-view="recognised">Not applicable to your standing.</span>
                 </td>
                 <td class="mono-s" data-label="Ref.">SP/OP/0115</td>
-                <td><a class="ctl" href="apply.html">Apply ↗</a></td>
+                <td><a class="link" href="apply.html">Apply <span aria-hidden="true">↗</span></a></td>
               </tr>
               <tr>
                 <td class="p-name">Permit to Learn — Emerging</td>
                 <td data-label="Description">Development of a method not yet practised</td>
                 <td data-label="Requirements">
                   <span data-view="applicant">Demonstrated proficiency in the method.</span>
-                  <span data-view="recognised" class="blue">Not applicable to your standing.</span>
+                  <span data-view="recognised">Not applicable to your standing.</span>
                 </td>
                 <td class="mono-s" data-label="Ref.">SP/OP/0116</td>
-                <td><a class="ctl" href="apply.html">Apply ↗</a></td>
+                <td><a class="link" href="apply.html">Apply <span aria-hidden="true">↗</span></a></td>
               </tr>
             </tbody>
           </table>
@@ -175,32 +165,21 @@
       </div>
     </div>
 
-    <div class="frame"><div class="sep sep--slash" aria-hidden="true"></div></div>
-
-    <section class="frame" aria-label="Authority">
-      <p class="statement" style="max-width: 22ch">Standards make progress possible. Exceptions keep it in the right hands.</p>
-      <p style="margin-top: 16px"><a class="link" href="charter.html#preamble">The basis of our authority <span aria-hidden="true">↗</span></a></p>
+    <section class="frame authority" aria-label="Authority">
+      <p class="statement">Standards make progress possible. Exceptions keep it in the right hands.</p>
+      <a class="link" href="charter.html#preamble">The basis of our authority <span aria-hidden="true">↗</span></a>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="frame">
-      <div class="cmp footer-cmp">
-        <div>
-          <p class="mono">Standard Practice — Office for Exceptions</p>
-          <p class="mono-s">Established 1852. Practice Charter, Revision 03.</p>
-        </div>
-        <div>
-          <p class="mono">Standards in force. Exceptions by determination.</p>
-        </div>
-        <nav class="footer-links mono" aria-label="Footer">
-          <a href="charter.html">The Charter</a>
-          <a href="record.html">Your Record</a>
-          <a href="observation.html">Lodge an observation</a>
-          <a href="index.html" data-reverify>Re-verify standing</a>
-        </nav>
-      </div>
-      <p class="spread" aria-hidden="true">O F F I C E &nbsp; F O R &nbsp; E X C E P T I O N S</p>
+    <div class="frame footer-row">
+      <p class="mono">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links mono-s" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html">Your Record</a>
+        <a href="observation.html">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
     </div>
   </footer>
 </body>

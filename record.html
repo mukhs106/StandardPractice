@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
@@ -16,15 +16,14 @@
   <header class="masthead">
     <div class="utility">
       <div class="frame utility__row mono-s">
-        <span>Standard Practice — Office for Exceptions</span>
-        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span><span class="utility__est">Est. 1852 · </span>Practice Charter Rev. 03</span>
         <span data-today></span>
       </div>
     </div>
     <div class="frame mast">
-      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub rev">Office for Exceptions</span></a>
+      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub">Office for Exceptions</span></a>
       <nav class="mast__nav" aria-label="Office">
-        <p class="mast__standing">Viewing as <span class="rev" data-standing-label>Applicant</span></p>
+        <p class="mast__standing">Viewing as <strong data-standing-label>Applicant</strong></p>
         <ul>
           <li><a href="charter.html">The Charter</a></li>
           <li><a href="record.html" aria-current="page">Your Record</a></li>
@@ -38,73 +37,51 @@
     <section class="page-head frame">
       <p class="mono-s">The Record · Part 8</p>
       <h1 class="statement">Your Record.</h1>
-      <p class="page-head__assert mono"><span class="rev">The Record is permanent. You may view it. You may not amend it.</span></p>
+      <p class="page-head__assert mono">The Record is permanent. You may view it. You may not amend it.</p>
     </section>
 
     <div class="frame">
-      <div class="cmp record-stats">
-        <div class="is-ink">
-          <p class="mono-s">Standing</p>
-          <p class="status-row__val" id="standing-statement"></p>
-        </div>
-        <div>
-          <p class="mono-s">Permits held</p>
-          <p class="status-row__val" data-fact="permits">0</p>
-        </div>
-        <div>
-          <p class="mono-s">Recognition</p>
-          <p class="status-row__val blue" data-fact="recognition"></p>
-        </div>
-        <div>
-          <p class="mono-s">Public record</p>
-          <p class="status-row__val" data-fact="publicRecord"></p>
-        </div>
-      </div>
-    </div>
+      <section class="ledger" aria-labelledby="ledger-title">
+        <dl class="ledger__summary mono-s">
+          <div class="ledger__standing"><dt>Standing</dt><dd id="standing-statement"></dd></div>
+          <div><dt>Permits held</dt><dd data-fact="permits">0</dd></div>
+          <div><dt>Recognition</dt><dd data-fact="recognition"></dd></div>
+          <div><dt>Public record</dt><dd data-fact="publicRecord"></dd></div>
+        </dl>
 
-    <div class="frame">
-      <div class="cmp record-cmp">
-        <div class="record-side">
-          <p class="mono-s">Correspondence · <span data-fact="entries">0</span> entries</p>
-          <p class="qual">Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
-          <a class="ctl no-print" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a>
+        <div class="ledger__head">
+          <h2 class="mono" id="ledger-title">Correspondence · <span data-fact="entries">0</span> on file</h2>
+          <a class="link no-print" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a>
         </div>
-        <div>
-          <p class="copy" id="record-empty" hidden>Correspondence will be entered here as it is issued.</p>
-          <table class="record-table" id="record-table">
-            <thead>
-              <tr>
-                <th scope="col">Ref.</th>
-                <th scope="col">Date</th>
-                <th scope="col">Document</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody id="record-rows"></tbody>
-          </table>
-        </div>
-      </div>
+
+        <p class="copy ledger__empty" id="record-empty" hidden>Correspondence will be entered here as it is issued.</p>
+        <table class="record-table" id="record-table" aria-labelledby="ledger-title">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">Ref.</th>
+              <th scope="col">Date</th>
+              <th scope="col">Document</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="record-rows"></tbody>
+        </table>
+
+        <p class="qual ledger__note">Entries marked with an asterisk carry a qualification. Matters which are not in the Record cannot be verified (<a class="xref" href="charter.html#c-8-2">8.2</a>).</p>
+      </section>
     </div>
   </main>
 
   <footer class="site-footer">
-    <div class="frame">
-      <div class="cmp footer-cmp">
-        <div>
-          <p class="mono">Standard Practice — Office for Exceptions</p>
-          <p class="mono-s">Established 1852. Practice Charter, Revision 03.</p>
-        </div>
-        <div>
-          <p class="mono">Standards in force. Exceptions by determination.</p>
-        </div>
-        <nav class="footer-links mono" aria-label="Footer">
-          <a href="charter.html">The Charter</a>
-          <a href="record.html" aria-current="page">Your Record</a>
-          <a href="observation.html">Lodge an observation</a>
-          <a href="index.html" data-reverify>Re-verify standing</a>
-        </nav>
-      </div>
-      <p class="spread" aria-hidden="true">O F F I C E &nbsp; F O R &nbsp; E X C E P T I O N S</p>
+    <div class="frame footer-row">
+      <p class="mono">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links mono-s" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html" aria-current="page">Your Record</a>
+        <a href="observation.html">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
     </div>
   </footer>
 </body>

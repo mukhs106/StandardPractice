@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
@@ -16,15 +16,14 @@
   <header class="masthead">
     <div class="utility">
       <div class="frame utility__row mono-s">
-        <span>Standard Practice — Office for Exceptions</span>
-        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span><span class="utility__est">Est. 1852 · </span>Practice Charter Rev. 03</span>
         <span data-today></span>
       </div>
     </div>
     <div class="frame mast">
-      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub rev">Office for Exceptions</span></a>
+      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub">Office for Exceptions</span></a>
       <nav class="mast__nav" aria-label="Office">
-        <p class="mast__standing">Viewing as <span class="rev" data-standing-label>Applicant</span></p>
+        <p class="mast__standing">Viewing as <strong data-standing-label>Applicant</strong></p>
         <ul>
           <li><a href="charter.html">The Charter</a></li>
           <li><a href="record.html">Your Record</a></li>
@@ -35,55 +34,39 @@
   </header>
 
   <main id="main">
-    <section class="page-head frame no-print">
+    <section class="page-head frame no-print" data-needs-determination>
       <p class="mono-s">Form P-1 · Determination · <span id="det-ref"></span></p>
+      <h1 class="statement" data-det-view="deferred">Submission complete. Recognition deferred.</h1>
+      <h1 class="statement" data-det-view="not-required" hidden>No Permit is required.</h1>
     </section>
 
     <div class="frame">
-      <div class="empty" id="no-determination" hidden>
-        <p class="statement">A Determination has not yet been issued.</p>
+      <div class="empty page-head" id="no-determination" hidden>
+        <h1 class="statement">A Determination has not yet been issued.</h1>
         <p class="copy">Determinations are issued on receipt of a complete dossier.</p>
         <a class="btn" href="apply.html">Submit the dossier <span aria-hidden="true">→</span></a>
       </div>
 
-      <div class="cmp status-row no-print" data-needs-determination>
-        <div class="is-blue">
-          <p class="mono-s">Determination</p>
-          <p class="status-row__big" id="det-status"></p>
-        </div>
-        <div>
-          <p class="mono-s">Submission</p>
-          <p class="status-row__val" id="det-submission"></p>
-        </div>
-        <div>
-          <p class="mono-s">Recognition</p>
-          <p class="status-row__val blue" id="det-recognition"></p>
-        </div>
-        <div>
-          <p class="mono-s">Public record</p>
-          <p class="status-row__val" id="det-public"></p>
-        </div>
-      </div>
+      <dl class="decision no-print" data-needs-determination>
+        <div class="decision__main"><dt class="mono-s">Determination</dt><dd id="det-status"></dd></div>
+        <div><dt class="mono-s">Submission</dt><dd id="det-submission"></dd></div>
+        <div><dt class="mono-s">Recognition</dt><dd id="det-recognition"></dd></div>
+        <div><dt class="mono-s">Public record</dt><dd id="det-public"></dd></div>
+      </dl>
 
-      <div class="cmp doc-layout" data-needs-determination>
+      <div class="doc-layout" data-needs-determination>
+        <div class="doc-main" id="letter-slot"></div>
+
         <div class="doc-side no-print">
-          <div data-det-view="deferred">
-            <p class="statement">Submission complete. Recognition deferred.</p>
-            <p class="copy" style="margin-top: 12px">Obtain Evidence of Prior Practice: Work made under a Permit. Then apply again.</p>
-          </div>
-          <div data-det-view="not-required" hidden>
-            <p class="statement">No Permit is required.</p>
-            <p class="copy" style="margin-top: 12px">Your standing has been assumed. Begin.</p>
-          </div>
+          <p class="copy" data-det-view="deferred">Obtain Evidence of Prior Practice: Work made under a Permit. Then apply again.</p>
+          <p class="copy" data-det-view="not-required" hidden>Your standing has been assumed. Begin.</p>
 
-          <div class="doc-actions">
-            <button class="ctl" type="button" id="review-toggle" aria-expanded="false" aria-controls="review">Request a review (Form R-1) <span aria-hidden="true">↓</span></button>
-            <a class="ctl" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a>
-            <a class="ctl" href="unregistered.html">Proceed without a Permit <span aria-hidden="true">↗</span></a>
-            <button class="ctl" type="button" data-print>Print this determination <span aria-hidden="true">⎙</span></button>
-          </div>
-
-          <div id="clauses-slot"></div>
+          <ul class="doc-actions">
+            <li><button class="doc-action" type="button" id="review-toggle" aria-expanded="false" aria-controls="review">Request a review (Form R-1) <span aria-hidden="true">↓</span></button></li>
+            <li><a class="doc-action" href="observation.html">Lodge an observation <span aria-hidden="true">↗</span></a></li>
+            <li><a class="doc-action" href="unregistered.html">Proceed without a Permit <span aria-hidden="true">↗</span></a></li>
+            <li><button class="doc-action" type="button" data-print>Print this determination <span aria-hidden="true">⎙</span></button></li>
+          </ul>
 
           <section class="review" id="review" aria-labelledby="review-title" hidden>
             <p class="mono-s">Form R-1</p>
@@ -94,11 +77,11 @@
                 <label class="label" for="clause">Clause considered misapplied</label>
                 <input class="input" id="clause" name="clause" type="text" autocomplete="off">
               </div>
-              <div class="field" style="margin-top: 12px">
+              <div class="field">
                 <label class="label" for="grounds">Grounds for review</label>
                 <textarea class="input" id="grounds" name="grounds" rows="4"></textarea>
               </div>
-              <p style="margin-top: 16px"><button class="btn" type="submit">Submit request <span aria-hidden="true">→</span></button></p>
+              <button class="btn" type="submit">Submit request <span aria-hidden="true">→</span></button>
             </form>
             <div class="review__reply" id="review-reply" tabindex="-1" hidden>
               <p class="mono"><span class="rev">Treated as an Observation</span></p>
@@ -106,31 +89,22 @@
               <p class="copy" id="review-text"></p>
             </div>
           </section>
-        </div>
 
-        <div class="doc-main" id="letter-slot"></div>
+          <div id="clauses-slot"></div>
+        </div>
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
-    <div class="frame">
-      <div class="cmp footer-cmp">
-        <div>
-          <p class="mono">Standard Practice — Office for Exceptions</p>
-          <p class="mono-s">Established 1852. Practice Charter, Revision 03.</p>
-        </div>
-        <div>
-          <p class="mono">Standards in force. Exceptions by determination.</p>
-        </div>
-        <nav class="footer-links mono" aria-label="Footer">
-          <a href="charter.html">The Charter</a>
-          <a href="record.html">Your Record</a>
-          <a href="observation.html">Lodge an observation</a>
-          <a href="index.html" data-reverify>Re-verify standing</a>
-        </nav>
-      </div>
-      <p class="spread" aria-hidden="true">O F F I C E &nbsp; F O R &nbsp; E X C E P T I O N S</p>
+    <div class="frame footer-row">
+      <p class="mono">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links mono-s" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html">Your Record</a>
+        <a href="observation.html">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
     </div>
   </footer>
 </body>

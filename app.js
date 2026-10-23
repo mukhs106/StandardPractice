@@ -923,7 +923,7 @@
     function show(i, arriving) {
       var spec = UM_LETTERS[i];
       var entry = entryFor(i);
-      var item = el('div', 'cmp corr-item' + (arriving ? ' arrive' : ''));
+      var item = el('div', 'corr-item' + (arriving ? ' arrive' : ''));
       item.tabIndex = -1;
       item.setAttribute('aria-label', 'Day ' + spec.day + ': ' + spec.document);
 
@@ -1023,6 +1023,8 @@
       var id = 'record-letter-' + n;
 
       var row = el('tr', 'record-row');
+      var noCell = el('td', 'nowrap record-no', String(n + 1).padStart(2, '0'));
+      noCell.setAttribute('data-label', 'No.');
       var refCell = el('td', 'nowrap', entry.ref);
       refCell.setAttribute('data-label', 'Ref.');
       var dateCell = el('td', 'nowrap', formatDate(entry.date, (entry.letter && entry.letter.day) || 0));
@@ -1042,16 +1044,16 @@
       var statusCell = el('td', 'status' + (entry.qualifies ? ' is-qual' : ''), entry.status);
       statusCell.setAttribute('data-label', 'Status');
 
-      [refCell, dateCell, docCell, statusCell].forEach(function (c) { row.appendChild(c); });
+      [noCell, refCell, dateCell, docCell, statusCell].forEach(function (c) { row.appendChild(c); });
 
       var expansion = el('tr', 'record-letter');
       expansion.id = id;
       expansion.hidden = true;
       var cell = el('td');
-      cell.colSpan = 4;
+      cell.colSpan = 5;
       var wrap = el('div', 'record-letter__inner');
       wrap.appendChild(renderLetter(entry));
-      var print = el('button', 'ctl no-print record-print', 'Print this letter');
+      var print = el('button', 'link no-print record-print', 'Print this letter');
       print.type = 'button';
       print.addEventListener('click', function () { printOne(expansion); });
       wrap.appendChild(print);

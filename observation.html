@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js"></script>
 </head>
@@ -16,15 +16,14 @@
   <header class="masthead">
     <div class="utility">
       <div class="frame utility__row mono-s">
-        <span>Standard Practice — Office for Exceptions</span>
-        <span>Est. 1852 · Practice Charter Rev. 03</span>
+        <span><span class="utility__est">Est. 1852 · </span>Practice Charter Rev. 03</span>
         <span data-today></span>
       </div>
     </div>
     <div class="frame mast">
-      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub rev">Office for Exceptions</span></a>
+      <a class="mast__mark" href="home.html"><span class="mast__name">Standard Practice</span><span class="mast__sub">Office for Exceptions</span></a>
       <nav class="mast__nav" aria-label="Office">
-        <p class="mast__standing">Viewing as <span class="rev" data-standing-label>Applicant</span></p>
+        <p class="mast__standing">Viewing as <strong data-standing-label>Applicant</strong></p>
         <ul>
           <li><a href="charter.html">The Charter</a></li>
           <li><a href="record.html">Your Record</a></li>
@@ -38,53 +37,46 @@
     <section class="page-head frame">
       <p class="mono-s">Form O-1 · Observation on the Standard</p>
       <h1 class="statement">Lodge an observation.</h1>
-      <p class="page-head__assert mono"><span class="rev">Observations do not affect Determinations.</span></p>
     </section>
 
     <div class="frame">
-      <div class="cmp obs-cmp">
-        <div>
-          <form id="o1" novalidate>
-            <div class="field">
-              <label class="label" for="observation">Your observation</label>
-              <textarea class="input" id="observation" name="observation" rows="6"></textarea>
-            </div>
-            <p><button class="btn" type="submit">Lodge <span aria-hidden="true">→</span></button></p>
-          </form>
+      <div class="filing">
+        <dl class="filing__meta mono-s">
+          <div><dt>Filed by</dt><dd data-standing-label>Applicant</dd></div>
+          <div><dt>Concerning</dt><dd>The Standard</dd></div>
+          <div><dt>Effect on Determinations</dt><dd>None</dd></div>
+        </dl>
 
-          <div class="receipt" id="o1-receipt" tabindex="-1" hidden>
-            <p class="mono-l"><span class="rev">Filed with the Standard.</span></p>
-            <p class="mono-s" id="o1-ref"></p>
-            <p class="copy" id="o1-text"></p>
-            <a class="btn" href="record.html">View your Record <span aria-hidden="true">→</span></a>
+        <form class="filing__body" id="o1" novalidate>
+          <div class="field">
+            <label class="label" for="observation">Your observation</label>
+            <textarea class="input" id="observation" name="observation" rows="6"></textarea>
           </div>
+          <div class="filing__foot">
+            <button class="btn" type="submit">Lodge <span aria-hidden="true">→</span></button>
+            <p class="qual">Observations are filed with the Standard and considered at the next Revision (<a class="xref" href="charter.html#c-7-3">7.3</a>). Revisions are not scheduled.</p>
+          </div>
+        </form>
+
+        <div class="filing__body receipt" id="o1-receipt" tabindex="-1" hidden>
+          <p class="mono-l"><span class="rev">Filed with the Standard.</span></p>
+          <p class="mono-s" id="o1-ref"></p>
+          <p class="copy" id="o1-text"></p>
+          <a class="btn" href="record.html">View your Record <span aria-hidden="true">→</span></a>
         </div>
-        <aside>
-          <p class="mono-s">Procedure</p>
-          <p class="qual">Observations are filed with the Standard and considered at the next Revision (<a class="xref" href="charter.html#c-7-3">7.3</a>). Revisions are not scheduled.</p>
-        </aside>
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
-    <div class="frame">
-      <div class="cmp footer-cmp">
-        <div>
-          <p class="mono">Standard Practice — Office for Exceptions</p>
-          <p class="mono-s">Established 1852. Practice Charter, Revision 03.</p>
-        </div>
-        <div>
-          <p class="mono">Standards in force. Exceptions by determination.</p>
-        </div>
-        <nav class="footer-links mono" aria-label="Footer">
-          <a href="charter.html">The Charter</a>
-          <a href="record.html">Your Record</a>
-          <a href="observation.html" aria-current="page">Lodge an observation</a>
-          <a href="index.html" data-reverify>Re-verify standing</a>
-        </nav>
-      </div>
-      <p class="spread" aria-hidden="true">O F F I C E &nbsp; F O R &nbsp; E X C E P T I O N S</p>
+    <div class="frame footer-row">
+      <p class="mono">Standards in force. Exceptions by determination.</p>
+      <nav class="footer-links mono-s" aria-label="Footer">
+        <a href="charter.html">The Charter</a>
+        <a href="record.html">Your Record</a>
+        <a href="observation.html" aria-current="page">Lodge an observation</a>
+        <a href="index.html" data-reverify>Re-verify standing</a>
+      </nav>
     </div>
   </footer>
 </body>
