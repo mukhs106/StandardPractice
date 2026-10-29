@@ -351,6 +351,28 @@
     return null;
   }
 
+  function determinations() {
+    return (state.record || []).filter(function (r) { return r.kind === 'determination'; });
+  }
+
+  // Letters in a series are dated a number of days after the case opened.
+  function letterDay(entry) {
+    return (entry.letter && entry.letter.day) || 0;
+  }
+
+  function dayLabel(day) {
+    return 'Day ' + String(day).padStart(3, '0');
+  }
+
+  // Appends a label followed by an aria-hidden arrow; returns the arrow so it can be changed.
+  function withArrow(node, text, glyph) {
+    node.appendChild(document.createTextNode(text + ' '));
+    var arrow = el('span', null, glyph);
+    arrow.setAttribute('aria-hidden', 'true');
+    node.appendChild(arrow);
+    return arrow;
+  }
+
   function formatDate(iso, offsetDays) {
     var d = new Date(iso);
     if (offsetDays) d.setDate(d.getDate() + offsetDays);
@@ -359,7 +381,7 @@
 
   // What the Office currently holds about this person, from actual state.
   function facts() {
-    var dets = (state.record || []).filter(function (r) { return r.kind === 'determination'; });
+    var dets = determinations();
     var last = dets[dets.length - 1];
     return {
       permits: 0, // The Office has never issued one.
@@ -399,12 +421,10 @@
   var TERM_NAMES = Object.keys(TERM_CLAUSES)
     .sort(function (a, b) { return b.length - a.length; });
 
-  function termKey(name) { return TERM_CLAUSES[name]; }
-
   // Passed as `linked` where only cross-references should become links (letter titles).
   function allTermsLinked() {
     var o = {};
-    TERM_NAMES.forEach(function (n) { o[termKey(n)] = true; });
+    TERM_NAMES.forEach(function (n) { o[TERM_CLAUSES[n]] = true; });
     return o;
   }
 
@@ -435,8 +455,8 @@
         replacement = ['(', link('xref', anchorFor(m[1] + '.' + m[2]), m[1] + '.' + m[2] + m[3]), ')'];
       } else if (m[4]) {
         replacement = ['(', link('xref', 'charter.html#part-' + m[4], 'Part ' + m[4]), ')'];
-      } else if (m[5] && !linked[termKey(m[5])]) {
-        linked[termKey(m[5])] = true;
+      } else if (m[5] && !linked[TERM_CLAUSES[m[5]]]) {
+        linked[TERM_CLAUSES[m[5]]] = true;
         replacement = [link('term', anchorFor(TERM_CLAUSES[m[5]]), m[5])];
       }
       if (!replacement) continue;
@@ -543,7 +563,6 @@
         n.textContent = String(f[n.getAttribute('data-fact')]);
       });
     }
-
   }
 
   /* ----------------------------------------------------------------
@@ -795,7 +814,7 @@
     paint();
 
     // A previous determination is cited, so a reapplication is made knowingly.
-    var dets = state.record.filter(function (r) { return r.kind === 'determination'; });
+    var dets = determinations();
     if (dets.length) {
       var last = dets[dets.length - 1];
       var priorLink = document.getElementById('prior-det-link');
@@ -810,11 +829,14 @@
       var result = paint();
       if (!result.complete) {
         var outstanding = [];
+        var firstOutstanding = null;
         for (var i = 1; i <= 5; i++) {
-          if (result.sections[i] === false) outstanding.push('0' + i + ' ' + SECTION_NAMES[i]);
+          if (result.sections[i] !== false) continue;
+          outstanding.push('0' + i + ' ' + SECTION_NAMES[i]);
+          if (firstOutstanding === null) firstOutstanding = i;
         }
         message.textContent = 'Submission incomplete. Outstanding: ' + outstanding.join(', ') + '.';
-        var first = document.getElementById('sec-' + outstanding[0].charAt(1));
+        var first = document.getElementById('sec-' + firstOutstanding);
         var heading = first.querySelector('h2');
         first.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' });
         heading.focus({ preventScroll: true });
@@ -874,7 +896,7 @@
     var slot = document.getElementById('letter-slot');
     var ref = null;
     try { ref = new URLSearchParams(window.location.search).get('ref'); } catch (e) {}
-    var dets = (state.record || []).filter(function (r) { return r.kind === 'determination'; });
+    var dets = determinations();
     var latest = dets[dets.length - 1] || null;
     var entry = ref ? findRecord(ref) : null;
     if (!entry || entry.kind !== 'determination') entry = latest;
@@ -1126,11 +1148,11 @@
         var spec = UM_LETTERS[i];
         var entry = findRecord(d.refs[i]);
         if (!entry) continue;
-        stages.appendChild(stageRow('Day ' + String(spec.day).padStart(3, '0'), spec.document, entry.status, entry.ref, 'letter-' + i));
+        stages.appendChild(stageRow(dayLabel(spec.day), spec.document, entry.status, entry.ref, 'letter-' + i));
         if (spec.classification) current = spec.classification;
         if (spec.offer && d.regularisation) {
           var rr = findRecord(d.regularisation);
-          if (rr) stages.appendChild(stageRow('Day ' + String(spec.day).padStart(3, '0'), 'Request for Regularisation', rr.status, rr.ref, 'rr-reply'));
+          if (rr) stages.appendChild(stageRow(dayLabel(spec.day), 'Request for Regularisation', rr.status, rr.ref, 'rr-reply'));
         }
       }
       if (d.shown < UM_LETTERS.length) stages.appendChild(stageRow('—', 'Further correspondence', 'Pending', '', null));
@@ -1209,10 +1231,7 @@
 
       var submit = el('button', 'btn');
       submit.type = 'submit';
-      submit.appendChild(document.createTextNode('Submit request '));
-      var arrow = el('span', null, '→');
-      arrow.setAttribute('aria-hidden', 'true');
-      submit.appendChild(arrow);
+      withArrow(submit, 'Submit request', '→');
       f.appendChild(submit);
       box.appendChild(f);
 
@@ -1282,7 +1301,7 @@
       item.setAttribute('aria-label', 'Day ' + spec.day + ': ' + spec.document);
 
       var rail = el('div', 'corr-rail');
-      rail.appendChild(el('p', 'mono-l', 'Day ' + String(spec.day).padStart(3, '0')));
+      rail.appendChild(el('p', 'mono-l', dayLabel(spec.day)));
       rail.appendChild(el('p', 'mono-s', entry.ref));
       rail.appendChild(el('p', 'mono-s', formatDate(entry.date, spec.day)));
       item.appendChild(rail);
@@ -1304,10 +1323,7 @@
       if (i < UM_LETTERS.length - 1) {
         var next = el('button', 'btn corr-next no-print');
         next.type = 'button';
-        next.appendChild(document.createTextNode('Next correspondence '));
-        var arrow = el('span', null, '↓');
-        arrow.setAttribute('aria-hidden', 'true');
-        next.appendChild(arrow);
+        withArrow(next, 'Next correspondence', '↓');
         next.addEventListener('click', function () { show(i + 1, true); });
         letters.parentNode.insertBefore(next, end);
       } else {
@@ -1378,7 +1394,7 @@
   var DAY = 86400000;
 
   function effectiveTime(entry) {
-    return new Date(entry.date).getTime() + ((entry.letter && entry.letter.day) || 0) * DAY;
+    return new Date(entry.date).getTime() + letterDay(entry) * DAY;
   }
 
   function publicRow(work, enteredAs, ref) {
@@ -1440,7 +1456,7 @@
       noCell.setAttribute('data-label', 'No.');
       var refCell = el('td', 'nowrap', entry.ref);
       refCell.setAttribute('data-label', 'Ref.');
-      var dateCell = el('td', 'nowrap', formatDate(entry.date, (entry.letter && entry.letter.day) || 0));
+      var dateCell = el('td', 'nowrap', formatDate(entry.date, letterDay(entry)));
       dateCell.setAttribute('data-label', 'Date');
 
       var docCell = el('td');
@@ -1448,10 +1464,7 @@
       toggle.type = 'button';
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-controls', id);
-      toggle.appendChild(document.createTextNode(entry.document + ' '));
-      var arrow = el('span', null, '↓');
-      arrow.setAttribute('aria-hidden', 'true');
-      toggle.appendChild(arrow);
+      var arrow = withArrow(toggle, entry.document, '↓');
       docCell.appendChild(toggle);
       if (entry.concerning) docCell.appendChild(el('span', 'record-concerning', 'Concerning ' + entry.concerning));
 
