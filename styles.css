@@ -38,7 +38,8 @@
   --space-6: 64px;
 
   --gutter: 16px;
-  --measure: 60ch;
+  /* A ch is the width of a zero, so 44ch sets at most 60 characters of Inter. Re-measure with any other typeface. */
+  --measure: 44ch;
   --document: 760px;
 
   color-scheme: light;
