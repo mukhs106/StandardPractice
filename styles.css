@@ -3,17 +3,26 @@
 
 /* ------------------------------------------------------------------
    Tokens
+   One typeface, black and white. Hierarchy, state and emphasis come from
+   size, weight, spacing, rules, borders, position and wording.
+
+   Recorded for later, as an addition and not a dependency:
+   --qualification: #C00000;
+   --serif: Georgia, "Times New Roman", Times, serif;
+   font-variant-numeric: oldstyle-nums; on documents and clauses, with Georgia
    ------------------------------------------------------------------ */
 
 :root {
   --black: #000000;
   --white: #FFFFFF;
-  --red: #C00000;
+  --qualification: var(--black);
 
-  --sans: Inter, "Helvetica Neue", Arial, sans-serif;
-  --serif: Georgia, "Times New Roman", Times, serif;
+  --typeface: Inter, "Helvetica Neue", Arial, sans-serif;
+  --sans: var(--typeface);
+  --serif: var(--typeface);
 
   --rule: 1px solid var(--black);
+  --rule-strong: 2px solid var(--black);
 
   --text-s: 14px;
   --text-m: 16px;
@@ -168,10 +177,18 @@ button, input, textarea { font: inherit; color: inherit; border-radius: 0; }
   font-weight: 500;
 }
 
-/* Red: qualifications and conditional decisions only. */
-.is-qualified { color: var(--red); }
+/* Qualifications and conditional decisions: heavier, set against a rule. */
+.is-qualified { color: var(--qualification); font-weight: 500; }
 
 .qualification { max-width: var(--measure); margin-top: var(--space-5); font-size: var(--text-s); }
+
+.qualification.is-qualified,
+.letter__body span.is-qualified,
+.record__table span.is-qualified {
+  display: block;
+  padding-left: var(--space-3);
+  border-left: var(--rule-strong);
+}
 
 .gate__declare { margin-top: var(--space-5); }
 
@@ -333,7 +350,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 }
 
 /* ------------------------------------------------------------------
-   Documents: Georgia for title, body and signature; Inter for metadata
+   Documents: larger body and a framed letterhead set them apart from procedure
    ------------------------------------------------------------------ */
 
 .letter { max-width: var(--document); scroll-margin-top: var(--space-3); border-top: var(--rule); border-bottom: var(--rule); }
@@ -353,15 +370,27 @@ textarea.input { min-height: 120px; resize: vertical; }
 .letter__body {
   padding-block: var(--space-5);
   font: 400 var(--text-doc) / 1.5 var(--serif);
-  font-variant-numeric: oldstyle-nums;
 }
 
-.letter__status { font-size: var(--text-heading); line-height: 1.2; }
-.letter__note { margin-bottom: var(--space-4); }
-.letter__title { margin-bottom: var(--space-4); font-size: var(--text-title); font-weight: 400; line-height: 1.25; }
+.letter__title { margin-bottom: var(--space-4); font-size: var(--text-title); font-weight: 500; line-height: 1.25; }
 
 .letter__body p { max-width: var(--measure); }
 .letter__body p + p { margin-top: var(--space-3); }
+
+/* A sentence qualified within a paragraph stands on its own line. */
+.letter__body span:not(.is-qualified) + span.is-qualified { margin-top: var(--space-3); }
+
+/* The decision: boxed at the head of the letter. */
+.letter__decision {
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  border: var(--rule-strong);
+}
+
+.letter__status { font-size: var(--text-heading); line-height: 1.2; }
+.letter__body .letter__note { margin-top: var(--space-1); }
 
 .letter__sign { margin-top: var(--space-5); }
 .letter__body .letter__sign p + p { margin-top: var(--space-5); }
@@ -407,7 +436,6 @@ textarea.input { min-height: 120px; resize: vertical; }
   padding: var(--space-3);
   border-top: var(--rule);
   font: 400 var(--text-m) / 1.45 var(--serif);
-  font-variant-numeric: oldstyle-nums;
   vertical-align: top;
 }
 
@@ -470,8 +498,8 @@ textarea.input { min-height: 120px; resize: vertical; }
 .panel__document-title { font-weight: 500; }
 
 /* Governing provisions: numbers in their own column, outside the prose measure. */
-.provisions { font: 400 var(--text-doc) / 1.5 var(--serif); font-variant-numeric: oldstyle-nums; }
-.provisions__section { margin-top: var(--space-5); font-size: var(--text-title); font-weight: 400; }
+.provisions { font: 400 var(--text-doc) / 1.5 var(--serif); }
+.provisions__section { margin-top: var(--space-5); font-size: var(--text-title); font-weight: 500; }
 
 .clause {
   display: grid;
