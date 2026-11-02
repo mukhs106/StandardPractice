@@ -291,8 +291,12 @@ function documentNode(doc) {
   head.append(el('p', 'letterhead__issuer', OFFICE.issuer), meta);
 
   const body = el('div', 'letter__body');
-  if (doc.status) body.append(el('p', 'letter__status is-qualified', doc.status));
-  if (doc.note) body.append(el('p', 'letter__note is-qualified', doc.note));
+  if (doc.status) {
+    const decision = el('div', 'letter__decision');
+    decision.append(el('p', 'letter__status is-qualified', doc.status));
+    if (doc.note) decision.append(el('p', 'letter__note is-qualified', doc.note));
+    body.append(decision);
+  }
   body.append(el('h2', 'letter__title', doc.title));
   doc.body.forEach((runs) => body.append(paragraph(runs)));
   const sign = el('div', 'letter__sign');
@@ -647,7 +651,9 @@ function recordTable() {
   body.append(first);
   recordRows().forEach(([submitted, official, qualified]) => {
     const row = el('tr');
-    row.append(el('td', '', submitted), el('td', qualified ? 'is-qualified' : '', official));
+    const entry = el('td');
+    entry.append(qualified ? el('span', 'is-qualified', official) : official);
+    row.append(el('td', '', submitted), entry);
     body.append(row);
   });
 
